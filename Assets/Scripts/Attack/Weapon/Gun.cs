@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Gun : MonoBehaviour {
+public class Gun : Weapon {
 
 	[Header("Magazine Settings")]
 	public int magazineSize;
@@ -10,14 +10,6 @@ public class Gun : MonoBehaviour {
 	public float reloadingCooldown;
 	[Range(0.1f,1.5f)]
 	public float fireCooldown;
-
-	[Space(10)]
-
-	[Header("Hitting Settings")]
-	public bool isAlly;
-	public int damage;
-	public LayerMask notToHit;
-
 	[Space(10)]
 
 	[Header("Projectile Settings")]
@@ -33,28 +25,33 @@ public class Gun : MonoBehaviour {
 	private bool hasShooted = false;
 	private bool canShoot = true;
 	Transform firePoint;
-	bool shootButtonPressed = false;
 	bool needToReleaseButton = false;
 	bool needToReload = false ;
 	bool isReloading = false;
-	Vector2 movement_vector;
+
 
 	void Awake () {
+
 		firePoint = transform.FindChild ("FirePoint");
 		if (firePoint == null) {
 			Debug.LogError ("[GUN] No FirePoint");
 		}
 	}
 
+	// Use this for initialization
+	protected override void Start () {
+		base.Start();
+	}
+
 	// Update is called once per frame
 	void Update () {
 		
-		ProcessInput ();
+	//	ProcessInput ();
 		ProcessCooldowns ();
-		ProcessingShoot ();
-
+	//	ProcessingShoot ();
+		ProcessReload();
 	}
-
+	/*
 	void ProcessInput(){
 		
 		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal");
@@ -78,6 +75,20 @@ public class Gun : MonoBehaviour {
 
 		movement_vector = new Vector2 (fireHorizontal, fireVertical);
 		movement_vector.Normalize ();
+	}*/
+
+	void ProcessReload(){
+		if(attackLogicOwner.getAttackButtonIsPressed() && needToReleaseButton == false){
+			if (needToReload == true) {
+				Debug.Log ("Reloading...");
+				needToReload = false;
+			}
+		}
+		if (needToReleaseButton) {
+			if (!attackLogicOwner.getAttackButtonIsPressed()) {
+				needToReleaseButton = false;
+			}
+		}
 	}
 
 	void ProcessCooldowns(){
@@ -114,36 +125,39 @@ public class Gun : MonoBehaviour {
 			}
 		}
 	}
-
+	/*
 	void ProcessingShoot(){
 		if (movement_vector.x != 0 || movement_vector.y != 0) {
 			if (canShoot && shootButtonPressed) {
 				//Debug.Log ("Is Shooting");
-				Shoot(movement_vector);
+				Attack(movement_vector);
 			}
 		} else {
 
 		}
-	}
+	}*/
 
-	void Shoot(Vector2 directionVector){
-		hasShooted = true;
+	public override void Attack(Vector2 directionVector){
 
-		GameObject go = Instantiate(defaultProjectile,firePoint.position,this.transform.rotation) as GameObject;
-		nbBulletsUsed++;
+		if (canShoot) {
+			hasShooted = true;
 
-		go.GetComponent<Rigidbody2D> ().velocity = new Vector2 (directionVector.x*bulletSpeed,directionVector.y*bulletSpeed);
+			GameObject go = Instantiate (defaultProjectile, firePoint.position, this.transform.rotation) as GameObject;
+			nbBulletsUsed++;
 
-		float deg = Vector2.Angle (new Vector2 (1, 0), directionVector);
-		if (directionVector.y < 0) {
-			deg = 360 - deg;
+			go.GetComponent<Rigidbody2D> ().velocity = new Vector2 (directionVector.x * bulletSpeed, directionVector.y * bulletSpeed);
+
+			float deg = Vector2.Angle (new Vector2 (1, 0), directionVector);
+			if (directionVector.y < 0) {
+				deg = 360 - deg;
+			}
+
+			go.transform.eulerAngles = new Vector3 (go.transform.eulerAngles.x, go.transform.eulerAngles.y, deg);
+
+			Projectile p = go.GetComponent<Projectile> ();
+			p.setIsAlly (isAlly);
+			p.SetDamage (damage);
 		}
-
-		go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x,go.transform.eulerAngles.y, deg);
-
-		Projectile p = go.GetComponent<Projectile> ();
-		p.setIsAlly (isAlly);
-		p.SetDamage (damage);
 	}
 
 
