@@ -14,7 +14,8 @@ public class Gun : MonoBehaviour {
 	[Space(10)]
 
 	[Header("Hitting Settings")]
-	public float damage;
+	public bool isAlly;
+	public int damage;
 	public LayerMask notToHit;
 
 	[Space(10)]
@@ -139,6 +140,10 @@ public class Gun : MonoBehaviour {
 		}
 
 		go.transform.eulerAngles = new Vector3(go.transform.eulerAngles.x,go.transform.eulerAngles.y, deg);
+
+		Projectile p = go.GetComponent<Projectile> ();
+		p.setIsAlly (isAlly);
+		p.SetDamage (damage);
 	}
 
 

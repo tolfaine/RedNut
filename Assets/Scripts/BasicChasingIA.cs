@@ -31,11 +31,11 @@ public class BasicChasingIA : MonoBehaviour {
 		direction.Normalize ();
 
 		if (playerDistance < range) {
-			Debug.Log ("Attack");
+		//	Debug.Log ("Attack");
 			StopMoving ();
 			Attack ();
 		} else {
-			Debug.Log ("Move");
+			//Debug.Log ("Move");
 			Move ();
 		}
 
@@ -53,5 +53,16 @@ public class BasicChasingIA : MonoBehaviour {
 
 	void StopMoving(){
 		rbody.velocity = Vector2.zero;
+	}
+
+
+	[ContextMenu("Set to default Cac IA")]
+	void SetToDefaultCac(){
+		range = 0.3f;
+	}
+
+	[ContextMenu("Set to default Dist IA")]
+	void SetToDefaultDist(){
+		range = 2f;
 	}
 }
