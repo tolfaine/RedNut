@@ -44,38 +44,10 @@ public class Gun : Weapon {
 	}
 
 	// Update is called once per frame
-	void Update () {
-		
-	//	ProcessInput ();
+	protected override void Update () {
 		ProcessCooldowns ();
-	//	ProcessingShoot ();
 		ProcessReload();
 	}
-	/*
-	void ProcessInput(){
-		
-		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal");
-		float fireVertical = Input.GetAxis("RightJoystickVertical");
-
-		if(Input.GetAxis("Fire2") > 0 && needToReleaseButton == false){
-			if (needToReload == true) {
-				Debug.Log ("Reloading...");
-				needToReload = false;
-			}
-			shootButtonPressed = true;
-		}else{
-			shootButtonPressed = false;
-		}
-
-		if (needToReleaseButton) {
-			if (Input.GetAxis ("Fire2") <= 0) {
-				needToReleaseButton = false;
-			}
-		}
-
-		movement_vector = new Vector2 (fireHorizontal, fireVertical);
-		movement_vector.Normalize ();
-	}*/
 
 	void ProcessReload(){
 		if(attackLogicOwner.getAttackButtonIsPressed() && needToReleaseButton == false){
