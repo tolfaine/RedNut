@@ -11,12 +11,12 @@ public class PlayerAttackLogic : AttackLogic {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected override void Update () {
 		ProcessInput ();
 		ProcessingAttack ();
 	}
 
-	void ProcessInput(){
+	protected override void ProcessInput(){
 
 		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal");
 		float fireVertical = Input.GetAxis("RightJoystickVertical");
@@ -30,7 +30,7 @@ public class PlayerAttackLogic : AttackLogic {
 		movement_vector.Normalize ();
 	}
 
-	void ProcessingAttack(){
+	protected override void ProcessingAttack(){
 		if (movement_vector.x != 0 || movement_vector.y != 0) {
 			if (attackButtonPressed) {
 				weapon.Attack(movement_vector);

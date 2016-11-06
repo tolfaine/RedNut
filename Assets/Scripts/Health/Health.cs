@@ -3,18 +3,23 @@ using System.Collections;
 
 public class Health : MonoBehaviour {
 
-	public bool isAlly;
-	public int health;
 	public int maxHealth;
 
-	void Start () {
+	public bool isAlly;
+	protected int health;
+
+	protected virtual void Awake () {
+		health = maxHealth;
 	}
 
-	void Update () {
+	protected virtual void Start () {
+	}
+
+	protected virtual void Update () {
 	
 	}
 
-	void OnTriggerEnter2D(Collider2D otherCollider)
+	protected virtual void OnTriggerEnter2D(Collider2D otherCollider)
 	{
 		// Is this a shot?
 		Projectile projectile = otherCollider.gameObject.GetComponent<Projectile>();
@@ -30,20 +35,25 @@ public class Health : MonoBehaviour {
 		}
 	}
 
-	public void TakeDamage(int damageCount)
+	public virtual void TakeDamage(int damageCount)
 	{
 		health -= damageCount;
+
 		if (health <= 0) {
+			Die ();
 			Destroy (this.gameObject);
 		}
 
 	}
 
-	void OnDestroy ()
+	protected virtual void OnDestroy ()
 	{
 
 	}
-
+	protected virtual void Die(){
+		
+		
+	}
 
 	
 

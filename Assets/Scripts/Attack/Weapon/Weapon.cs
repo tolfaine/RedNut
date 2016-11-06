@@ -6,7 +6,7 @@ public class Weapon : MonoBehaviour {
 	[Header("Hitting Settings")]
 	public bool isAlly;
 	public int damage;
-	public LayerMask notToHit;
+	//public LayerMask notToHit;
 	protected AttackLogic attackLogicOwner;
 
 	// Use this for initialization
@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	protected virtual void Update () {
 	
 	}
 

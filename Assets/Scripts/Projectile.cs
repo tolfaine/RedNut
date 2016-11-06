@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Projectile : MonoBehaviour {
 
-	[Range(1,5)]
+	[Range(0.2f,5)]
 	public float destroyTimer = 2f;
-	bool isAlly = true;
+	public bool isAlly;
 
 	int damage;
-	LayerMask notToHit;
+//	LayerMask notToHit;
 
 	// Use this for initialization
 	void Start () {
@@ -28,9 +28,9 @@ public class Projectile : MonoBehaviour {
 		damage = newDamage;
 	}
 
-	public void SetNotToHiLayer(LayerMask newLayer){
+/*	public void SetNotToHiLayer(LayerMask newLayer){
 		notToHit = newLayer;
-	}
+	}*/
 	public void setIsAlly(bool newIsAlly){
 		isAlly = newIsAlly;
 	}
