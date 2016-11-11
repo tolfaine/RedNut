@@ -9,12 +9,19 @@ public class CameraFlow : MonoBehaviour {
 
 	void Start () {
 		cam = GetComponent<Camera> ();
-
-
+		target = GameObject.FindGameObjectWithTag ("Player").transform;
 	}
 
+	void FuxedUpdate(){
+		if (target == null) {
+			target = GameObject.FindGameObjectWithTag ("Player").transform;
+		}
+	}
 	void Update () {
-		cam.orthographicSize = (Screen.height / 100f) / 3f;
-		transform.position = Vector3.MoveTowards(transform.position,target.position+ new Vector3 (0f, 0f, -10),1f);
+
+		if (target != null) {
+			cam.orthographicSize = (Screen.height / 100f) / 3f;
+			transform.position = Vector3.MoveTowards (transform.position, target.position + new Vector3 (0f, 0f, -10), 1f);
+		}
 	}
 }

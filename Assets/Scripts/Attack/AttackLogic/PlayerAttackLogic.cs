@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
 public class PlayerAttackLogic : AttackLogic {
 	
+	public int playerNumber;
+
 	Vector2 movement_vector;
 
 	// Use this for initialization
@@ -17,11 +20,11 @@ public class PlayerAttackLogic : AttackLogic {
 	}
 
 	protected override void ProcessInput(){
+		Debug.Log (playerNumber);
+		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal_P"+playerNumber);
+		float fireVertical = Input.GetAxis("RightJoystickVertical_P"+playerNumber);
 
-		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal");
-		float fireVertical = Input.GetAxis("RightJoystickVertical");
-
-		if (Input.GetAxis ("Fire2") > 0) {
+		if (Input.GetAxis ("Fire_P"+playerNumber) > 0) {
 			attackButtonPressed = true;
 		} else {
 			attackButtonPressed = false;

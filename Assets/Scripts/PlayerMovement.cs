@@ -2,9 +2,10 @@
 using System.Collections;
 
 public class PlayerMovement : MonoBehaviour {
-	
-	public float speed;
 
+	public int playerNumber;
+
+	public float speed;
 	Rigidbody2D rbody;
 	Animator anim;
 	Vector2 velocity;
@@ -20,14 +21,15 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
+		
 		ProcessMovement ();
 	}
 
 	void ProcessInput(){
-		float horizontal = Input.GetAxis("LeftJoystickHorizontal");
-		float vertical = Input.GetAxis("LeftJoystickVertical");
+		float horizontal = Input.GetAxis("LeftJoystickHorizontal_P"+playerNumber);
+		float vertical = Input.GetAxis("LeftJoystickVertical_P"+playerNumber);
 
-		movement_vector = new Vector2 (Input.GetAxis ("LeftJoystickHorizontal"), Input.GetAxis ("LeftJoystickVertical"));
+		movement_vector = new Vector2 (horizontal, vertical);
 		if (horizontal != 0 || vertical != 0) {
 			anim.SetBool ("isWalking", true);
 			anim.SetFloat ("input_x", horizontal);
