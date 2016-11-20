@@ -41,6 +41,7 @@ public class LevelInfo{
 [System.Serializable]
 public class RoundInfo{
 	public int nbEnemies;
+	public bool isBossRound;
 }
 
 

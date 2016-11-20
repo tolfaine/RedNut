@@ -7,7 +7,8 @@ public class IAAttackLogic : AttackLogic {
 	public float speed;
 	public float range;
 
-	Transform player;
+	//Transform player;
+	Transform playerTarget;
 	Rigidbody2D rbody;
 	bool playerInSight;
 	float playerDistance;
@@ -19,20 +20,47 @@ public class IAAttackLogic : AttackLogic {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
-		player = GameObject.FindGameObjectWithTag ("Player").transform;
+		findNearestPlayer ();
 		rbody = GetComponent<Rigidbody2D> ();
 
 	}
 	
 	// Update is called once per frame
-	protected override void Update () {
-		
+
+	protected override void FixedUpdate () {
+		base.FixedUpdate ();
+		findNearestPlayer ();
+
+	}
+
+	protected void findNearestPlayer () {		
+		GameObject[] lGo = GameObject.FindGameObjectsWithTag ("Player");
+
+		Transform nearestObjTransform = null;
+		float nearestDistance = 999999f;;
+
+		foreach(GameObject go in lGo){
+			Transform t = go.transform;
+			Vector2 dir= t.position - transform.position;
+			float dist = dir.magnitude;
+
+			if (dist < nearestDistance) {
+				nearestDistance = dist;
+				nearestObjTransform = go.transform;
+			}
+		}
+
+		playerTarget = nearestObjTransform;
+	}
+
+	protected override void Update () {		
 		ProcessInput ();
 		ProcessingAttack ();
 	}
 
 	protected override void ProcessInput(){
-		movement_vector = player.position - transform.position;
+
+		movement_vector = playerTarget.position - transform.position;
 		playerDistance = movement_vector.magnitude;
 		movement_vector.Normalize ();
 	}

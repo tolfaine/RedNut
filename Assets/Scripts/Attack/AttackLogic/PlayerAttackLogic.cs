@@ -5,22 +5,27 @@ using System.Collections;
 public class PlayerAttackLogic : AttackLogic {
 	
 	public int playerNumber;
-
 	Vector2 movement_vector;
+	private Transform bras;
 
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
+		bras = transform.FindChild("BrasAnchor");
 	}
 	
 	// Update is called once per frame
 	protected override void Update () {
 		ProcessInput ();
+		ProcessArmMovement ();
 		ProcessingAttack ();
 	}
 
+	protected override void FixedUpdate () {
+		base.FixedUpdate ();
+	}
+
 	protected override void ProcessInput(){
-		Debug.Log (playerNumber);
 		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal_P"+playerNumber);
 		float fireVertical = Input.GetAxis("RightJoystickVertical_P"+playerNumber);
 
@@ -41,6 +46,15 @@ public class PlayerAttackLogic : AttackLogic {
 		} else {
 
 		}
+	}
+
+	protected void ProcessArmMovement(){
+		
+		float deg = Vector2.Angle (new Vector2 (1, 0), movement_vector);
+		if (movement_vector.y < 0) {
+			deg = 360 - deg;
+		}
+		bras.eulerAngles = new Vector3 (bras.eulerAngles.x, bras.eulerAngles.y, deg);
 	}
 
 

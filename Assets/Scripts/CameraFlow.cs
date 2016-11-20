@@ -9,19 +9,17 @@ public class CameraFlow : MonoBehaviour {
 
 	void Start () {
 		cam = GetComponent<Camera> ();
-		target = GameObject.FindGameObjectWithTag ("Player").transform;
+		target = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").transform;
 	}
 
-	void FuxedUpdate(){
-		if (target == null) {
-			target = GameObject.FindGameObjectWithTag ("Player").transform;
+	void FixedUpdate(){
+		if (target != null) {
+			cam.orthographicSize = (Screen.height / 5f) / 3f;
+			transform.position = Vector3.MoveTowards (transform.position, target.position + new Vector3 (0f, 0f, -10), speed);
 		}
 	}
 	void Update () {
 
-		if (target != null) {
-			cam.orthographicSize = (Screen.height / 100f) / 3f;
-			transform.position = Vector3.MoveTowards (transform.position, target.position + new Vector3 (0f, 0f, -10), 1f);
-		}
+
 	}
 }

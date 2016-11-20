@@ -1,0 +1,8 @@
+-TimedEffect
+	- Dot / Hot
+	- Debuff/ Buff Health
+	- Debuff/ Buff Speed
+	- Debuff/ Buff  AttackSpeed
+-DirectEffect
+	- ++/-- Health
+	- 

@@ -7,12 +7,17 @@ public class AttackLogic : MonoBehaviour {
 	protected bool attackButtonPressed;
 	// Use this for initialization
 	protected virtual void Start () {
-		weapon = transform.FindChild("Weapon").GetComponent<Weapon> ();
+		weapon = transform.GetComponentInChildren<Weapon> ();
+		weapon.setOwner(this);
 	}
 	
 	// Update is called once per frame
 	protected virtual void Update () {
 	
+	}
+
+	protected virtual void FixedUpdate () {
+
 	}
 
 	protected virtual void ProcessInput(){

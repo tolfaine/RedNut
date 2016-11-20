@@ -54,6 +54,7 @@ public class LevelManager : MonoBehaviour {
 
 			currentRoundManager = currentGameObjectRoundManager.GetComponent<RoundManager> ();
 			currentRoundManager.setValues (levelInfo.listRound [nextRoundManagerIndex], spawnningPoints, this);
+			currentRoundManager.setIsBossRound (levelInfo.listRound [nextRoundManagerIndex].isBossRound);
 			currentRoundManager.SpawnEnemy ();
 			nextRoundManagerIndex++;
 		} else {

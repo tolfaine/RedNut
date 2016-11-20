@@ -50,6 +50,7 @@ public class Gun : Weapon {
 	}
 
 	void ProcessReload(){
+
 		if(attackLogicOwner.getAttackButtonIsPressed() && needToReleaseButton == false){
 			if (needToReload == true) {
 				Debug.Log ("Reloading...");
@@ -149,4 +150,8 @@ public class Gun : Weapon {
 		fireCooldown = 0.3f;
 	}
 
+
+	public override void setOwner(AttackLogic a){
+		base.setOwner (a);
+	}
 }

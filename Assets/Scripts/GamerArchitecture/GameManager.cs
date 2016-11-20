@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameInfo = transform.GetComponent<GameInfo> ();
-		startMultiPlayerGame ();
+		startSinglePlayerGame ();
 
 	}
 	
@@ -29,7 +29,6 @@ public class GameManager : MonoBehaviour {
 		currentSessionManagerIndex = 0;
 		CreateSession ();
 	}
-
 	void startSinglePlayerGame(){
 		Debug.Log ("Start Single Player Game");
 		currentSessionManagerIndex = 1;
@@ -63,6 +62,9 @@ public class GameManager : MonoBehaviour {
 			playerMovement.playerNumber = i+1;
 	
 		}
+
+		PlayerCenterPoint playerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").GetComponent<PlayerCenterPoint>();
+		playerCenterPoint.findPlayers ();
 	}
 
 	public void EndGame(){

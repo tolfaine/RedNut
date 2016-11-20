@@ -14,14 +14,18 @@ public class PlayerHealth : Health {
 		base.Update ();
 	}
 
-	public override void TakeDamage(int damageCount)
+	public override void ModifHealth(int damageCount)
 	{
-		base.TakeDamage (damageCount);
+		base.ModifHealth (damageCount);
 
 	}
 
 	protected override void Die(){
 		base.Die ();
 
+		PlayerCenterPoint playerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").GetComponent<PlayerCenterPoint>();
+		playerCenterPoint.findPlayers ();
+
 	}
+		
 }

@@ -7,6 +7,8 @@ public class Health : MonoBehaviour {
 
 	public bool isAlly;
 	protected int health;
+	protected bool isDying = false;
+	protected bool readyToSelfDestroy = false;
 
 	protected virtual void Awake () {
 		health = maxHealth;
@@ -16,7 +18,13 @@ public class Health : MonoBehaviour {
 	}
 
 	protected virtual void Update () {
-	
+
+		if (isDying == true) {
+			readyToSelfDestroy = true;
+		}
+		if (readyToSelfDestroy) {
+			Destroy (this.gameObject);
+		}
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D otherCollider)
@@ -29,19 +37,19 @@ public class Health : MonoBehaviour {
 			// Avoid friendly fire
 			if (projectile.getIsAlly() != isAlly)
 			{
-				TakeDamage(projectile.getDamage());
+				ModifHealth(projectile.getDamage());
 				Destroy(projectile.gameObject);
 			}
 		}
 	}
 
-	public virtual void TakeDamage(int damageCount)
+	public virtual void ModifHealth(int damageCount)
 	{
 		health -= damageCount;
 
 		if (health <= 0) {
 			Die ();
-			Destroy (this.gameObject);
+			//Destroy (this.gameObject);
 		}
 
 	}
@@ -51,11 +59,17 @@ public class Health : MonoBehaviour {
 
 	}
 	protected virtual void Die(){
-		
+		isDying = true;
 		
 	}
 
+
+	public bool isItDying(){
+		return isDying;
+	}
 	
 
-
+	public bool getIsAlly(){
+		return isAlly;
+	}
 }

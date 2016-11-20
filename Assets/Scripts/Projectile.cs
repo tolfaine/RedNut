@@ -6,8 +6,8 @@ public class Projectile : MonoBehaviour {
 	[Range(0.2f,5)]
 	public float destroyTimer = 2f;
 	public bool isAlly;
-
 	int damage;
+
 //	LayerMask notToHit;
 
 	// Use this for initialization
@@ -27,6 +27,9 @@ public class Projectile : MonoBehaviour {
 	public void SetDamage(int newDamage){
 		damage = newDamage;
 	}
+	public int getDamage(){
+		return damage;
+	}
 
 /*	public void SetNotToHiLayer(LayerMask newLayer){
 		notToHit = newLayer;
@@ -43,7 +46,5 @@ public class Projectile : MonoBehaviour {
 
 	}
 
-	public int getDamage(){
-		return damage;
-	}
+
 }

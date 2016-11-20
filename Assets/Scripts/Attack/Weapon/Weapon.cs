@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour {
 
 	// Use this for initialization
 	protected virtual void Start () {
-		attackLogicOwner = transform.GetComponent<AttackLogic> ();
+		
 	}
 	
 	// Update is called once per frame
@@ -21,5 +21,9 @@ public class Weapon : MonoBehaviour {
 
 	public virtual void Attack(Vector2 directionVector){
 		
+	}
+
+	public virtual void setOwner(AttackLogic a){
+		attackLogicOwner = a;
 	}
 }

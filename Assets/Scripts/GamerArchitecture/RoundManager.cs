@@ -9,6 +9,7 @@ public class RoundManager : MonoBehaviour {
 	public RoundInfo roundInfo;
 	public List<Transform> spawnningPoints;
 	public GameObject enemyPrefab;
+	private bool isBossRound;
 
 	private LevelManager levelManagerOwner;
 
@@ -21,13 +22,13 @@ public class RoundManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo>().getEnemyPrefab();
+
 
 	}
 
 	// Use this for initialization
 	void Start () {
-
+		
 	}
 	
 	// Update is called once per frame
@@ -35,6 +36,9 @@ public class RoundManager : MonoBehaviour {
 	
 	}
 
+	public void setIsBossRound(bool b){
+		isBossRound = b;
+	}
 
 	public void EnemyDied ()  // Faut que chaque enemy ait une ref vers sont round manager
 	{
@@ -51,6 +55,8 @@ public class RoundManager : MonoBehaviour {
 	}
 		
 	public void SpawnEnemy(){
+		enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo>().getEnemyPrefab();
+
 		Debug.Log ("Spawn Enemies");
 		Transform currentTransform;
 		int index = 0;
