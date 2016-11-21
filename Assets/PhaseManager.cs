@@ -33,8 +33,6 @@ public class PhaseManager : MonoBehaviour {
 				anim.SetInteger ("phase", currentPhase);
 			}
 		}
-
-		Debug.Log ("Add point" + "   " + currentNbPoints + "   " + maxPhase + "   " + currentPhase);
 	}
 
 

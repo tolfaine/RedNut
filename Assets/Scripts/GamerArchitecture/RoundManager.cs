@@ -55,13 +55,16 @@ public class RoundManager : MonoBehaviour {
 	}
 		
 	public void SpawnEnemy(){
-		enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo>().getEnemyPrefab();
+		
 
 		Debug.Log ("Spawn Enemies");
 		Transform currentTransform;
 		int index = 0;
 		int count = spawnningPoints.Count;
 		for (int i = 0; i < roundInfo.nbEnemies; i++) {
+
+			enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo>().getRandomEnemyPrefab();
+
 			currentTransform = spawnningPoints [index];
 			if (enemyPrefab == null) {
 				Debug.Log ("dafuq2");

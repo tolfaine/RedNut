@@ -14,8 +14,6 @@ public class MyHealth : MonoBehaviour {
 	void Update () {
 
 		if (control_life_f != lastLife) {
-
-			Debug.Log (control_life_f + "blabla");
 			lastLife = control_life_f;
 			float newValue = MapValueRangeLife (control_life_f);
 			GameObject.FindGameObjectWithTag ("life_ui").GetComponent<UIProgressBar> ().value = newValue;
@@ -25,7 +23,6 @@ public class MyHealth : MonoBehaviour {
 	}
 
 	public void SetLife(float life) {
-		Debug.Log ("Set life");
 		control_life_f = life;
 	}
 	public float MapValueRangeLife(float value) {

@@ -3,9 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+public enum enumTypeEnnemi{Business, Enfant, Fourrier,Wesh, Jardinier, Joggers }
+
 public class GameInfo : MonoBehaviour {
 	public GameObject enemyPrefab;
 	public List<SessionInfo> listSession = new List<SessionInfo>(1);
+	public List<GroupEnemies> listGroupEnemies = new List<GroupEnemies>(1);
+	public List<Boss> listBoss = new List<Boss>(1);
+
 	// Use this for initialization
 	void Start () {
 
@@ -18,6 +23,15 @@ public class GameInfo : MonoBehaviour {
 
 	public GameObject getEnemyPrefab(){
 		return enemyPrefab;
+	}
+
+	public GameObject getRandomEnemyPrefab(){
+		GroupEnemies o;
+		int rand = Random.Range(0,listGroupEnemies.Count);
+		o = listGroupEnemies[rand];
+		rand = Random.Range(0,o.mobs.Count);
+
+		return o.mobs[rand];
 	}
 }
 [System.Serializable]
@@ -44,4 +58,16 @@ public class RoundInfo{
 	public bool isBossRound;
 }
 
+
+[System.Serializable]
+public class GroupEnemies{
+	public enumTypeEnnemi type;
+	public List<GameObject> mobs;
+}
+
+[System.Serializable]
+public class Boss{
+	public enumTypeEnnemi type;
+	public GameObject boss;
+}
 
