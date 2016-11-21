@@ -7,6 +7,7 @@ public class PlayerHealth : Health {
 	protected override void Start () {
 		base.Start ();
 		isAlly = true;
+		GameObject.FindGameObjectWithTag ("life_ui").GetComponent<MyHealth> ().maxHealthPlayer = maxHealth;
 	}
 	
 	// Update is called once per frame
@@ -17,6 +18,7 @@ public class PlayerHealth : Health {
 	public override void ModifHealth(int damageCount)
 	{
 		base.ModifHealth (damageCount);
+		GameObject.FindGameObjectWithTag ("life_ui").GetComponent<MyHealth> ().SetLife(health);
 
 	}
 
