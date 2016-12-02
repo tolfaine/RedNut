@@ -23,12 +23,20 @@ public class EnemyHealth : Health {
 	}
 
 	protected override void Die(){
-		base.Die ();
-		if (currentRound != null) {
-			currentRound.EnemyDied ();
+		if (currentRound != null && !isDying) {
+			//currentRound.EnemyDied ();
 		}
+
+		base.Die ();
+
+		GetComponent<IAAttackLogic> ().IsDyingFunc ();
+	}
+
+	void OnDestroy(){
+		currentRound.EnemyDied ();
 		InstantiateBasicLoot ();
 	}
+
 	protected virtual void InstantiateBasicLoot(){
 		GameObject lm = GameObject.FindGameObjectWithTag ("LootManager");
 		GameObject go = lm.GetComponent<LootManager> ().getRandomMobLoot ();

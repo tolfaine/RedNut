@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PlayerMovement : MonoBehaviour {
 
@@ -11,6 +12,8 @@ public class PlayerMovement : MonoBehaviour {
 	Vector2 velocity;
 	Vector2 movement_vector;
 	Vector2 direction_vector;
+
+	public List<AudioClip> footSteps;
 
 	void Start () {
 		rbody = GetComponent<Rigidbody2D> ();
@@ -24,6 +27,24 @@ public class PlayerMovement : MonoBehaviour {
 	void FixedUpdate(){
 		
 		ProcessMovement ();
+	}
+
+	public AudioClip randomFootstep(){
+		if (footSteps.Count > 0) {
+			int rand = Random.Range (0, footSteps.Count);
+			return footSteps [rand];
+		}
+
+		return null;
+	}
+
+
+	public void PlayFootStep(){
+		AudioClip clip = randomFootstep ();
+
+		if (clip != null) {
+			CustomAudioSource.PlayClipAt (clip, transform.position);
+		}
 	}
 
 	void ProcessInput(){

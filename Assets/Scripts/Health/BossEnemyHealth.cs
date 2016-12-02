@@ -7,10 +7,15 @@ public class BossEnemyHealth : EnemyHealth {
 
 	protected override void Die(){
 		base.Die ();
-		GameObject go = Instantiate (lootItem, transform.position, transform.rotation) as GameObject;
+
 
 	}
 
+	void OnDestroy(){
+		GameObject go = Instantiate (lootItem, transform.position, transform.rotation) as GameObject;
+	}
+
 	protected override void InstantiateBasicLoot(){
+		
 	}
 }

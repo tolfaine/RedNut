@@ -22,6 +22,7 @@ public class IAAttackLogic : AttackLogic {
 	public bool isAppearing = false;
 	private float appearDuration = 1f;
 
+	public bool isDying = false;
 
 	protected void Awake(){
 		GameObject weaponPoint =  transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject; // !!!!!!
@@ -45,6 +46,7 @@ public class IAAttackLogic : AttackLogic {
 	protected override void FixedUpdate () {
 		base.FixedUpdate ();
 		findNearestPlayer ();
+
 
 	}
 
@@ -88,9 +90,10 @@ public class IAAttackLogic : AttackLogic {
 	}
 
 	protected override void Update () {		
-		ProcessInput ();
 
-		if (!isAppearing) {
+
+		if (!isAppearing && !isDying) {
+			ProcessInput ();
 			ProcessArmMovement ();
 			ProcessingAttack ();
 		}
@@ -140,11 +143,16 @@ public class IAAttackLogic : AttackLogic {
 		anim.SetBool ("isWalking", true);
 	}
 
-	protected void StopMoving(){
+	public void StopMoving(){
 		rbody.velocity = Vector2.zero;
 		anim.SetBool ("isWalking", false);
 	}
 
+	public void IsDyingFunc(){
+		isDying = true;
+		StopMoving ();
+		bras.gameObject.SetActive (false);
+	}
 
 	protected void Flip(){
 		

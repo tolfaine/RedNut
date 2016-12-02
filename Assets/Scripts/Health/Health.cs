@@ -10,6 +10,7 @@ public class Health : MonoBehaviour {
 	protected bool isDying = false;
 	protected bool readyToSelfDestroy = false;
 	bool destroyActivated = false;
+	public Animator animator;
 
 	public bool invulnerable = true;
 
@@ -19,12 +20,18 @@ public class Health : MonoBehaviour {
 
 	protected virtual void Start () {
 		//SetInvulnerability (false);
+		animator = GetComponent<Animator>();
 	}
 
 	protected virtual void Update () {
 
 		if (isDying == true) {
-			readyToSelfDestroy = true;
+			animator.SetBool ("dead", true);
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("dead") &&
+				animator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 1.0f) {
+				readyToSelfDestroy = true;
+			}
+
 		}
 		if (readyToSelfDestroy && !destroyActivated) {
 			destroyActivated = true;
