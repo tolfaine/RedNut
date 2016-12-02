@@ -6,10 +6,10 @@ using System.Linq;
 public enum enumTypeEnnemi{Business, Enfant, Fourrier,Wesh, Jardinier, Joggers }
 
 public class GameInfo : MonoBehaviour {
-	public GameObject enemyPrefab;
 	public List<SessionInfo> listSession = new List<SessionInfo>(1);
 	public List<GroupEnemies> listGroupEnemies = new List<GroupEnemies>(1);
 	public List<Boss> listBoss = new List<Boss>(1);
+
 
 	// Use this for initialization
 	void Start () {
@@ -21,11 +21,35 @@ public class GameInfo : MonoBehaviour {
 
 	}
 
-	public GameObject getEnemyPrefab(){
-		return enemyPrefab;
+	public GameObject getRandomEnemyAtLevelIndex(int index){
+		int rand = Random.Range(0,3);
+		enumTypeEnnemi e = enumTypeEnnemi.Joggers;
+		if (rand == 0) {
+			e = listBoss [index].type;
+		} else if (rand == 1) {
+			e = enumTypeEnnemi.Jardinier;
+		} else if (rand == 2) {
+			e = enumTypeEnnemi.Joggers;
+		}
+		return getRandomEnemyOfType (e);
 	}
 
-	public GameObject getRandomEnemyPrefab(){
+	private GameObject getRandomEnemyOfType(enumTypeEnnemi type){
+		for (int i = 0; i < listGroupEnemies.Count; i++) {
+			if (listGroupEnemies[i].type == type) {
+				return getRandomEnemyPrefabAtIndex (i);
+			}
+		}
+		return null;
+	}
+
+	private GameObject getRandomEnemyPrefabAtIndex(int index){
+
+		int rand = Random.Range(0,listGroupEnemies[index].mobs.Count);
+		return listGroupEnemies[index].mobs[rand];
+	}
+
+	private GameObject getRandomEnemyPrefab(){
 		GroupEnemies o;
 		int rand = Random.Range(0,listGroupEnemies.Count);
 		o = listGroupEnemies[rand];
@@ -33,7 +57,17 @@ public class GameInfo : MonoBehaviour {
 
 		return o.mobs[rand];
 	}
+
+	public GameObject getBossAtIndex(int index){
+		return listBoss [index].boss;
+	}
+
+	public GameObject getGunBossAtIndex(int index){
+		return listBoss [index].lootedGun;
+	}
 }
+
+
 [System.Serializable]
 public class SessionInfo{
 	//public int nbRounds;
@@ -69,5 +103,6 @@ public class GroupEnemies{
 public class Boss{
 	public enumTypeEnnemi type;
 	public GameObject boss;
+	public GameObject lootedGun;
 }
 

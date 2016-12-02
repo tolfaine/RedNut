@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Gun : Weapon {
+	
+	public List<AudioClip> shotSounds = new List<AudioClip>(1);
 
 	[Header("Magazine Settings")]
 	public int magazineSize;
@@ -29,6 +32,13 @@ public class Gun : Weapon {
 	bool needToReload = false ;
 	bool isReloading = false;
 
+	public AudioClip randomShotSound(){
+		if (shotSounds.Count > 0) {
+			int rand = Random.Range (0, shotSounds.Count);
+			return shotSounds [rand];
+		}
+		return null;
+	}
 
 	void Awake () {
 
@@ -41,6 +51,7 @@ public class Gun : Weapon {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
+
 	}
 
 	// Update is called once per frame
@@ -98,22 +109,45 @@ public class Gun : Weapon {
 			}
 		}
 	}
-	/*
-	void ProcessingShoot(){
-		if (movement_vector.x != 0 || movement_vector.y != 0) {
-			if (canShoot && shootButtonPressed) {
-				//Debug.Log ("Is Shooting");
-				Attack(movement_vector);
-			}
-		} else {
 
+	public float randomPitch(){
+	//	float rand = Random.Range(0.95f,1.05f); gland
+		float rand = Random.Range(0.98f,1.02f);
+		return rand;
+	}
+
+
+	public override void AttackNoCd(Vector2 directionVector){
+
+
+		playRandomShotSound ();
+
+		hasShooted = true;
+
+		GameObject go = Instantiate (defaultProjectile, firePoint.position, this.transform.rotation) as GameObject;
+		nbBulletsUsed++;
+
+		go.GetComponent<Rigidbody2D> ().velocity = new Vector2 (directionVector.x * bulletSpeed, directionVector.y * bulletSpeed);
+
+		float deg = Vector2.Angle (new Vector2 (1, 0), directionVector);
+		if (directionVector.y < 0) {
+			deg = 360 - deg;
 		}
-	}*/
+
+		go.transform.eulerAngles = new Vector3 (go.transform.eulerAngles.x, go.transform.eulerAngles.y, deg);
+
+		Projectile p = go.GetComponent<Projectile> ();
+		p.setIsAlly (isAlly);
+		p.SetDamage (damage);
+
+	}
 
 	public override void Attack(Vector2 directionVector){
 
 		if (canShoot) {
 			hasShooted = true;
+
+			playRandomShotSound ();
 
 			GameObject go = Instantiate (defaultProjectile, firePoint.position, this.transform.rotation) as GameObject;
 			nbBulletsUsed++;
@@ -153,5 +187,17 @@ public class Gun : Weapon {
 
 	public override void setOwner(AttackLogic a){
 		base.setOwner (a);
+	}
+
+	public void playRandomShotSound(){
+		//if (a != null ) {
+		//	a.clip = randomShotSound ();
+		//	a.pitch = randomPitch ();
+		//	a.Play ();
+		AudioClip clip = randomShotSound ();
+		if (clip != null) {
+			CustomAudioSource.PlayClipAt (clip, transform.position);
+		}
+		//}
 	}
 }

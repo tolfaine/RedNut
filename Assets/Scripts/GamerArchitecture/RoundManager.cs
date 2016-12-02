@@ -48,36 +48,72 @@ public class RoundManager : MonoBehaviour {
 
 	void CheckNbDiedEnemis ()
 	{
-		if (nbEnemiesDead == roundInfo.nbEnemies) {
+		if (nbEnemiesDead == roundInfo.nbEnemies && !isBossRound) {
 			levelManagerOwner.NextRound ();
-		}
+		}// else if (isBossRound) {
+			//levelManagerOwner.NextRound ();
+		//}
 
+	}
+
+	public void EndBossRound(){
+		levelManagerOwner.EndLastRound ();
 	}
 		
 	public void SpawnEnemy(){
 		
+		if (!isBossRound) {
+			Debug.Log ("Spawn Enemies");
+			Transform currentTransform;
+			int index = 0;
+			int count = spawnningPoints.Count;
 
-		Debug.Log ("Spawn Enemies");
-		Transform currentTransform;
-		int index = 0;
-		int count = spawnningPoints.Count;
-		for (int i = 0; i < roundInfo.nbEnemies; i++) {
+			GameManager gm = GameObject.FindWithTag ("GameManager").GetComponent<GameManager> ();
+			for (int i = 0; i < roundInfo.nbEnemies; i++) {
 
-			enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo>().getRandomEnemyPrefab();
+				enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getRandomEnemyAtLevelIndex (levelManagerOwner.getCurrentLevelIndex());
 
-			currentTransform = spawnningPoints [index];
-			if (enemyPrefab == null) {
-				Debug.Log ("dafuq2");
+				currentTransform = spawnningPoints [index];
+				if (enemyPrefab == null) {
+					Debug.Log ("dafuq2");
+				}
+				GameObject go = Instantiate (enemyPrefab, gm.randomPosition(), transform.rotation) as GameObject;
+				go.GetComponent<EnemyHealth> ().setRoundManagerOwner (this);
+
+				go.GetComponent<IAAttackLogic> ().StartAppearing (2f);
+
+				index++;
+				if (index == count) {
+					index = 0;
+				}
 			}
-			GameObject go = Instantiate (enemyPrefab, currentTransform.position, transform.rotation) as GameObject;
-			go.GetComponent<EnemyHealth> ().setRoundManagerOwner (this);
+		} else {
 
-			index++;
-			if (index == count) {
-				index = 0;
-			}
+			SpawnBoss ();
+
 		}
 			
 	}
 
+	protected void SpawnBoss(){
+
+		Debug.Log ("BOSS ROUND");
+	/*	enemyPrefab = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getBossAtIndex (levelManagerOwner.getCurrentLevelIndex());
+		Transform currentTransform = spawnningPoints [0];
+		GameObject go = Instantiate (enemyPrefab, currentTransform.position, transform.rotation) as GameObject;
+		go.GetComponent<EnemyHealth> ().setRoundManagerOwner (this);*/
+
+		GameObject.FindWithTag ("CinematicManager").GetComponent<CinematicManager> ().ActivateCinematicAtIndex (levelManagerOwner.getCurrentLevelIndex ());
+
+		/*
+		CameraFlow c = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraFlow>();
+
+		go.GetComponent<IAAttackLogic> ().StartAppearing ();
+		c.StartBossCinematic ();
+
+		float timer = go.GetComponent<IAAttackLogic> ().GetAppearDuration();
+		c.Invoke("EndBossCinematic",timer);*/
+		//go.GetComponent<IAAttackLogic> ().StartAppearing ();
+	}
+		
 }

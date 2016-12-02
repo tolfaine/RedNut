@@ -9,7 +9,7 @@ public class LevelManager : MonoBehaviour {
 
 
 	public LevelInfo levelInfo;
-	private int currentLevelManagerIndex = 0;
+	public int currentLevelManagerIndex = 0;
 	private float timerSinceLastRoundSpawn;
 	private RoundManager currentRoundManager;
 	private int nextRoundManagerIndex = 0;
@@ -17,12 +17,15 @@ public class LevelManager : MonoBehaviour {
 
 	private SessionManager sessionManagerOwner;
 
+	private bool bossHasbeenSpawned = false;
 
-	public void setValues(LevelInfo newLevelInfo,List<Transform> newSpawnningPoints, SessionManager owner ){
+	public void setValues(LevelInfo newLevelInfo,List<Transform> newSpawnningPoints, int index, SessionManager owner ){
+		currentLevelManagerIndex = index;
 		levelInfo = newLevelInfo;
 		sessionManagerOwner = owner;
 		spawnningPoints = newSpawnningPoints;
 		NextRound ();
+
 	}
 
 	// Use this for initialization
@@ -43,24 +46,35 @@ public class LevelManager : MonoBehaviour {
 
 	public void NextRound ()
 	{
+		Debug.Log ("Destroy Round manager");
 		Destroy (currentGameObjectRoundManager);
 
 
-		if (nextRoundManagerIndex <= levelInfo.listRound.Count-1) {
+		if (nextRoundManagerIndex <= levelInfo.listRound.Count) {
 			Debug.Log ("Next Rouuuund!");
 			currentGameObjectRoundManager = new GameObject ();
 			currentGameObjectRoundManager.AddComponent<RoundManager> ();
 			currentGameObjectRoundManager.name = "RoundManager";
+			currentGameObjectRoundManager.tag = "RoundManager";
 
 			currentRoundManager = currentGameObjectRoundManager.GetComponent<RoundManager> ();
 			currentRoundManager.setValues (levelInfo.listRound [nextRoundManagerIndex], spawnningPoints, this);
 			currentRoundManager.setIsBossRound (levelInfo.listRound [nextRoundManagerIndex].isBossRound);
 			currentRoundManager.SpawnEnemy ();
 			nextRoundManagerIndex++;
-		} else {
-			sessionManagerOwner.NextLevel ();
+		} //else {
 
-		}
+			//sessionManagerOwner.NextLevel ();
+
+		//}
 	}
 
+	public int getCurrentLevelIndex(){
+		return currentLevelManagerIndex;
+	}
+
+	public void EndLastRound(){
+		sessionManagerOwner.NextLevel ();
+	}
+		
 }

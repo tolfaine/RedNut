@@ -11,22 +11,33 @@ public class IAAttackLogic : AttackLogic {
 	Transform playerTarget;
 	Rigidbody2D rbody;
 	bool playerInSight;
-	float playerDistance;
-	bool isAttacking;
+	protected float playerDistance;
+	protected bool isAttacking;
 	Vector2 movement_vector;
 	bool facingRight = true;
 	Animator anim;
 
+	public bool canMoveArm = true;
 
+	public bool isAppearing = false;
+	private float appearDuration = 1f;
+
+
+	protected void Awake(){
+		GameObject weaponPoint =  transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject; // !!!!!!
+		GameObject weaponHolding = Instantiate (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IaWeapon, this.transform.position, this.transform.rotation) as GameObject; 
+		weaponHolding.transform.parent = weaponPoint.transform;
+		weaponHolding.transform.localPosition = Vector3.zero;
+
+		weaponHolding.GetComponentInChildren<Weapon> ().isAlly = false;
+	}
 
 	// Use this for initialization
 	protected override void Start () {
-		
 		base.Start();
 		findNearestPlayer ();
 		rbody = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
-
 	}
 	
 	// Update is called once per frame
@@ -36,6 +47,25 @@ public class IAAttackLogic : AttackLogic {
 		findNearestPlayer ();
 
 	}
+
+	public float GetAppearDuration(){
+		return appearDuration;
+	}
+
+	public virtual void StartAppearing(float duration ){
+		isAppearing = true;
+
+		EnemyHealth e = gameObject.GetComponent<EnemyHealth> ();
+		e.SetInvulnerability (isAppearing);
+		Invoke("StopAppearing",duration);
+	}
+
+	public virtual void StopAppearing(){
+		isAppearing = false;
+		EnemyHealth e = gameObject.GetComponent<EnemyHealth> ();
+		e.SetInvulnerability (isAppearing);
+	}
+
 
 	protected void findNearestPlayer () {		
 		GameObject[] lGo = GameObject.FindGameObjectsWithTag ("Player");
@@ -59,7 +89,11 @@ public class IAAttackLogic : AttackLogic {
 
 	protected override void Update () {		
 		ProcessInput ();
-		ProcessingAttack ();
+
+		if (!isAppearing) {
+			ProcessArmMovement ();
+			ProcessingAttack ();
+		}
 	}
 
 	protected override void ProcessInput(){
@@ -92,7 +126,7 @@ public class IAAttackLogic : AttackLogic {
 		}
 	}
 
-	void Attack(){
+	protected virtual void Attack(){
 		isAttacking = true;
 		if (weapon != null) {
 			//Debug.Log ("Attack player");
@@ -101,24 +135,41 @@ public class IAAttackLogic : AttackLogic {
 		isAttacking = false;
 	}
 
-	void Move(){
+	protected void Move(){
 		rbody.velocity = new Vector2(movement_vector.x *speed,movement_vector.y *speed);
 		anim.SetBool ("isWalking", true);
 	}
 
-	void StopMoving(){
+	protected void StopMoving(){
 		rbody.velocity = Vector2.zero;
 		anim.SetBool ("isWalking", false);
 	}
 
 
-	void Flip(){
+	protected void Flip(){
 		
 		facingRight = !facingRight;
 		Vector3 scale = transform.localScale;
 		scale.x *= -1;
 		transform.localScale = scale;
 
+		Vector3 scaleBras = bras.localScale;
+		scaleBras.x *= -1;
+		bras.localScale = scaleBras;
+	}
+
+	protected void ProcessArmMovement(){
+		if (canMoveArm) {
+			float deg = Vector2.Angle (new Vector2 (1, 0), movement_vector);
+			if (movement_vector.y < 0) {
+				deg = 360 - deg;
+			}
+			bras.eulerAngles = new Vector3 (bras.eulerAngles.x, bras.eulerAngles.y, deg);
+		}
+	}
+
+	public Vector3 GetMovementVector(){
+		return movement_vector;
 	}
 
 }

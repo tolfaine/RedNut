@@ -12,6 +12,10 @@ public class StatModEffect : Effect {
 			PhaseManager pm = target.GetComponentInChildren<PhaseManager> ();
 			pm.addPoints (1);
 			break;
+		case enumStat.Health:
+			Health h = target.GetComponentInChildren<Health> ();
+			h.ModifHealth (-(int)modValue);
+			break;
 		}
 	}
 }

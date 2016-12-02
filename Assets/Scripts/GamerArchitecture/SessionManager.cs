@@ -47,7 +47,7 @@ public class SessionManager : MonoBehaviour {
 
 			currentLevelManager = currentGameObjectLevelManager.GetComponent<LevelManager> ();
 
-			currentLevelManager.setValues (sessionInfo.listLevel [nextLevelManagerIndex],gameManagerOwner.spawnningPoints, this);
+			currentLevelManager.setValues (sessionInfo.listLevel [nextLevelManagerIndex],gameManagerOwner.spawnningPoints,nextLevelManagerIndex, this);
 			nextLevelManagerIndex++;
 		} else {
 			gameManagerOwner.EndGame ();

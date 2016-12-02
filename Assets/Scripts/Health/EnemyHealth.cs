@@ -9,6 +9,7 @@ public class EnemyHealth : Health {
 	protected override void Start () {
 		base.Start ();
 		isAlly = false;
+		gameObject.tag = "Enemy";
 	}
 
 	// Update is called once per frame
@@ -26,11 +27,16 @@ public class EnemyHealth : Health {
 		if (currentRound != null) {
 			currentRound.EnemyDied ();
 		}
+		InstantiateBasicLoot ();
+	}
+	protected virtual void InstantiateBasicLoot(){
 		GameObject lm = GameObject.FindGameObjectWithTag ("LootManager");
 		GameObject go = lm.GetComponent<LootManager> ().getRandomMobLoot ();
-
-		Instantiate (go, transform.position, this.transform.rotation);
+		if (go != null) {
+			Instantiate (go, transform.position, this.transform.rotation);
+		}
 	}
+
 
 	public void setRoundManagerOwner(RoundManager r){
 		currentRound = r;

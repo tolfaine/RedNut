@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum enumStat{Speed, DamageBoost, AttackRate, Health, Phase, SlowEnemies}
+
 public class Effect : MonoBehaviour {
 
 	public Transform target;
-
+	public float modValue;
 	// Use this for initialization
 	void Start () {
 		target = transform;

@@ -6,15 +6,19 @@ public class Health : MonoBehaviour {
 	public int maxHealth;
 
 	public bool isAlly;
-	protected int health;
+	public int health;
 	protected bool isDying = false;
 	protected bool readyToSelfDestroy = false;
+	bool destroyActivated = false;
+
+	public bool invulnerable = true;
 
 	protected virtual void Awake () {
 		health = maxHealth;
 	}
 
 	protected virtual void Start () {
+		//SetInvulnerability (false);
 	}
 
 	protected virtual void Update () {
@@ -22,35 +26,50 @@ public class Health : MonoBehaviour {
 		if (isDying == true) {
 			readyToSelfDestroy = true;
 		}
-		if (readyToSelfDestroy) {
+		if (readyToSelfDestroy && !destroyActivated) {
+			destroyActivated = true;
 			Destroy (this.gameObject);
 		}
+	}
+
+	public void SetInvulnerability(bool newVulnerability){
+		invulnerable = newVulnerability;
 	}
 
 	protected virtual void OnTriggerEnter2D(Collider2D otherCollider)
 	{
 		// Is this a shot?
-		Projectile projectile = otherCollider.gameObject.GetComponent<Projectile>();
-		if (projectile != null)
-		{
+		if (!invulnerable) {
+			Projectile projectile = otherCollider.gameObject.GetComponent<Projectile> ();
+			if (projectile != null) {
 
-			// Avoid friendly fire
-			if (projectile.getIsAlly() != isAlly)
-			{
-				ModifHealth(projectile.getDamage());
-				Destroy(projectile.gameObject);
+				// Avoid friendly fire
+				if (projectile.getIsAlly () != isAlly) {
+					ModifHealth (projectile.getDamage ());
+					Destroy (projectile.gameObject);
+				}
 			}
 		}
 	}
 
 	public virtual void ModifHealth(int damageCount)
 	{
-		health -= damageCount;
+		if (invulnerable) {
+			
+		} else {
+			health -= damageCount;
+		}
+
+		if (health > maxHealth) {
+			health = maxHealth;
+		}
 
 		if (health <= 0) {
+			health = 0;
 			Die ();
 			//Destroy (this.gameObject);
 		}
+
 
 	}
 

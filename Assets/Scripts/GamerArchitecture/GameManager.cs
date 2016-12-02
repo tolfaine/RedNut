@@ -11,7 +11,32 @@ public class GameManager : MonoBehaviour {
 	private SessionManager currentSessionManager;
 	private int currentSessionManagerIndex = 0;
 
+	public GameObject firstWeapon;
+	public GameObject IaWeapon;
+
+	public Transform height;
+	public Transform width;
+
 	public List<Transform> spawnningPoints;
+
+
+	public Vector3 randomPosition(){
+
+		Vector3 PlayerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").transform.position;
+
+		float minHeight = PlayerCenterPoint.x - 50 ;
+		float maxHeight = PlayerCenterPoint.x + 50 ;
+		float minWidth = PlayerCenterPoint.y - 50 ;
+		float maxWidth = PlayerCenterPoint.y + 50 ;
+
+
+		float x = Random.Range (-width.position.x, width.position.x);
+		float y = Random.Range (-height.position.y, height.position.y);
+
+		return new Vector3 (x, y, 0f);
+
+	}
+
 
 	// Use this for initialization
 	void Start () {
@@ -55,11 +80,17 @@ public class GameManager : MonoBehaviour {
 		for (int i = 0; i < nbP; i++) {
 			GameObject go =  Instantiate (prefabPlayer, this.transform.position, this.transform.rotation) as GameObject; 
 
+			GameObject weaponPoint =  go.transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject;
+			GameObject weaponHolding = Instantiate (firstWeapon, this.transform.position, this.transform.rotation) as GameObject; 
+			weaponHolding.GetComponentInChildren<Weapon> ().isAlly = true;
+			weaponHolding.transform.parent = weaponPoint.transform;
+			weaponHolding.transform.localPosition = Vector3.zero;
+
 			PlayerAttackLogic playerAttackLogic = go.GetComponent<PlayerAttackLogic>();
 			playerAttackLogic.playerNumber = i+1;
 
 			PlayerMovement playerMovement = go.GetComponent<PlayerMovement>();
-			playerMovement.playerNumber = i+1;
+			playerMovement.playerNumber = playerAttackLogic.playerNumber;
 	
 		}
 

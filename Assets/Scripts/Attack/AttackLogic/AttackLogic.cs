@@ -5,10 +5,13 @@ public class AttackLogic : MonoBehaviour {
 
 	protected Weapon weapon;
 	protected bool attackButtonPressed;
+	public Transform bras;
+
 	// Use this for initialization
 	protected virtual void Start () {
 		weapon = transform.GetComponentInChildren<Weapon> ();
 		weapon.setOwner(this);
+		bras = transform.FindChild("BrasAnchor");
 	}
 	
 	// Update is called once per frame

@@ -6,12 +6,12 @@ public class PlayerAttackLogic : AttackLogic {
 	
 	public int playerNumber;
 	Vector2 movement_vector;
-	private Transform bras;
+
 
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
-		bras = transform.FindChild("BrasAnchor");
+
 	}
 	
 	// Update is called once per frame
@@ -29,7 +29,7 @@ public class PlayerAttackLogic : AttackLogic {
 		float fireHorizontal = Input.GetAxis("RightJoystickHorizontal_P"+playerNumber);
 		float fireVertical = Input.GetAxis("RightJoystickVertical_P"+playerNumber);
 
-		if (Input.GetAxis ("Fire_P"+playerNumber) > 0) {
+		if (Mathf.Abs(fireVertical) > 0.2f || Mathf.Abs(fireHorizontal) > 0.2f) {
 			attackButtonPressed = true;
 		} else {
 			attackButtonPressed = false;
@@ -41,10 +41,11 @@ public class PlayerAttackLogic : AttackLogic {
 	protected override void ProcessingAttack(){
 		if (movement_vector.x != 0 || movement_vector.y != 0) {
 			if (attackButtonPressed) {
+				weapon.AttackButtonPressed = true;
 				weapon.Attack(movement_vector);
 			}
 		} else {
-
+			weapon.AttackButtonPressed = false;
 		}
 	}
 
