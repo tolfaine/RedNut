@@ -15,17 +15,17 @@ public class CameraFlow : MonoBehaviour {
 	}
 
 	void FixedUpdate(){
-		if (target != null) {
-			cam.orthographicSize = (Screen.height / 5f) / 3f;
-			//camUI.orthographicSize = (Screen.height / 5f) / 3f;
-			transform.position = Vector3.MoveTowards (transform.position, target.position + new Vector3 (0f, 0f, -10), 20);
 
-
-		}
 	}
 	void Update () {
 
+		if (target != null) {
+			cam.orthographicSize = (Screen.height / 5f) / 3f;
+			//camUI.orthographicSize = (Screen.height / 5f) / 3f;
+			transform.position = Vector3.MoveTowards (transform.position, target.position + new Vector3 (0f, 0f, -10), speed);
 
+
+		}
 	}
 
 	[ContextMenu("Set Cam")]
@@ -36,8 +36,8 @@ public class CameraFlow : MonoBehaviour {
 	}
 
 	public void SetTarget(Transform newTarget){
-		target.GetComponent<PlayerCenterPoint>().setNewTarget (newTarget);
-		//target = newTarget;
+	//	target.GetComponent<PlayerCenterPoint>().setNewTarget (newTarget);
+		target = newTarget;
 	}
 
 	public void StartBossCinematic(){
@@ -49,6 +49,7 @@ public class CameraFlow : MonoBehaviour {
 	}
 
 	public void ResetCamOnPlayer(){
-		target.GetComponent<PlayerCenterPoint>().findPlayers();
+		target = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").transform;
+		GameObject.FindGameObjectWithTag ("PlayerCenterPoint").GetComponent<PlayerCenterPoint>().findPlayers();
 	}
 }

@@ -70,6 +70,7 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public int getCurrentLevelIndex(){
+		Debug.Log (currentLevelManagerIndex);
 		return currentLevelManagerIndex;
 	}
 

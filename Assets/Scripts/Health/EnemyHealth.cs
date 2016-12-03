@@ -15,6 +15,12 @@ public class EnemyHealth : Health {
 	// Update is called once per frame
 	protected override void Update () {
 		base.Update ();
+
+		if (readyToSelfDestroy && !destroyActivated) {
+			destroyActivated = true;
+			Debug.Log ("Destroy");
+			Destroy (this.gameObject);
+		}
 	}
 
 	public override void ModifHealth(int damageCount)
@@ -29,10 +35,11 @@ public class EnemyHealth : Health {
 
 		base.Die ();
 
-		GetComponent<IAAttackLogic> ().IsDyingFunc ();
+
 	}
 
 	void OnDestroy(){
+
 		currentRound.EnemyDied ();
 		InstantiateBasicLoot ();
 	}

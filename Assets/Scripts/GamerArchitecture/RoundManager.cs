@@ -20,6 +20,9 @@ public class RoundManager : MonoBehaviour {
 	}
 
 
+	public LevelManager getOwner(){
+		return levelManagerOwner;
+	}
 	// Use this for initialization
 	void Awake () {
 

@@ -22,8 +22,6 @@ public class IAAttackLogic : AttackLogic {
 	public bool isAppearing = false;
 	private float appearDuration = 1f;
 
-	public bool isDying = false;
-
 	protected void Awake(){
 		GameObject weaponPoint =  transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject; // !!!!!!
 		GameObject weaponHolding = Instantiate (GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().IaWeapon, this.transform.position, this.transform.rotation) as GameObject; 
@@ -75,27 +73,37 @@ public class IAAttackLogic : AttackLogic {
 		Transform nearestObjTransform = null;
 		float nearestDistance = 999999f;;
 
+		int nbNotDead = 0;
 		foreach(GameObject go in lGo){
-			Transform t = go.transform;
-			Vector2 dir= t.position - transform.position;
-			float dist = dir.magnitude;
+			if (!go.GetComponent<Health> ().isItDying ()) {
+				nbNotDead++;
+				Transform t = go.transform;
+				Vector2 dir= t.position - transform.position;
+				float dist = dir.magnitude;
 
-			if (dist < nearestDistance) {
-				nearestDistance = dist;
-				nearestObjTransform = go.transform;
+				if (dist < nearestDistance) {
+					nearestDistance = dist;
+					nearestObjTransform = go.transform;
+				}
 			}
 		}
 
-		playerTarget = nearestObjTransform;
+		if (nbNotDead > 0) {
+			playerTarget = nearestObjTransform;
+		} else {
+			playerTarget = null;
+		}
 	}
 
 	protected override void Update () {		
 
 
-		if (!isAppearing && !isDying) {
+		if (!isAppearing && !isDying && playerTarget != null) {
 			ProcessInput ();
 			ProcessArmMovement ();
 			ProcessingAttack ();
+		} else if (playerTarget == null) {
+			StopMoving ();
 		}
 	}
 
@@ -148,10 +156,10 @@ public class IAAttackLogic : AttackLogic {
 		anim.SetBool ("isWalking", false);
 	}
 
-	public void IsDyingFunc(){
-		isDying = true;
+	public override void IsDyingFunc(){
+
+		base.IsDyingFunc ();
 		StopMoving ();
-		bras.gameObject.SetActive (false);
 	}
 
 	protected void Flip(){

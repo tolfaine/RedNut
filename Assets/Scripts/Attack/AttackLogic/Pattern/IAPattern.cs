@@ -41,4 +41,8 @@ public class IAPattern : MonoBehaviour {
 		owner.NextPattern ();
 	}
 
+	public void Stop(){
+		CancelInvoke ();
+	}
+
 }

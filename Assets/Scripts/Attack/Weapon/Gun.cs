@@ -187,6 +187,8 @@ public class Gun : Weapon {
 
 	public override void setOwner(AttackLogic a){
 		base.setOwner (a);
+
+
 	}
 
 	public void playRandomShotSound(){

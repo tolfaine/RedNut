@@ -29,20 +29,20 @@ public class PlayerCenterPoint : MonoBehaviour {
 		y = y / nbTarget;
 		z = z /nbTarget;
 
-		transform.position = new Vector3 (x, y, z);
+		transform.position = new Vector3 (x, y, transform.position.z);
 
 	}
 
 	public void setNewTarget(Transform newTarget){
 		listTargets = new List<Transform>() ;
 		listTargets.Add (newTarget);
+		nbTarget = listTargets.Count;
 	}
 
 	public void findPlayers(){
 		listTargets = new List<Transform> ();
 
 		GameObject[] lGo = GameObject.FindGameObjectsWithTag ("Player");
-
 		foreach (GameObject g in lGo) {
 			PlayerHealth ph = g.GetComponent<PlayerHealth> ();
 			if (!ph.isItDying ()) {

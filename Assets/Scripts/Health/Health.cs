@@ -9,7 +9,7 @@ public class Health : MonoBehaviour {
 	public int health;
 	protected bool isDying = false;
 	protected bool readyToSelfDestroy = false;
-	bool destroyActivated = false;
+	protected bool destroyActivated = false;
 	public Animator animator;
 
 	public bool invulnerable = true;
@@ -27,16 +27,23 @@ public class Health : MonoBehaviour {
 
 		if (isDying == true) {
 			animator.SetBool ("dead", true);
-			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("dead") &&
+			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("mort") || animator.GetCurrentAnimatorStateInfo (0).IsName ("dead")  &&
 				animator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 1.0f) {
 				readyToSelfDestroy = true;
 			}
 
 		}
-		if (readyToSelfDestroy && !destroyActivated) {
-			destroyActivated = true;
-			Destroy (this.gameObject);
-		}
+
+
+	}
+	public virtual void Resurect(){
+		health = maxHealth / 2;
+		isDying = false;
+		readyToSelfDestroy = false;
+		destroyActivated = false;
+
+
+		GetComponent<AttackLogic> ().Resurect ();
 	}
 
 	public void SetInvulnerability(bool newVulnerability){
@@ -86,7 +93,10 @@ public class Health : MonoBehaviour {
 	}
 	protected virtual void Die(){
 		isDying = true;
-		
+		foreach (Collider2D c in GetComponents<Collider2D>()) {
+			c.enabled = false;
+		}
+		GetComponent<AttackLogic> ().IsDyingFunc ();
 	}
 
 

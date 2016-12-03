@@ -27,6 +27,7 @@ public class CinematicManager : MonoBehaviour {
 				Transform currentTransform = listVehicules [indexCinematic].transform;
 				GameObject go = Instantiate (enemyPrefab, currentTransform.position, transform.rotation) as GameObject;
 				go.GetComponent<BossAttackLogic> ().bossIndex = indexCinematic;
+				go.GetComponent<BossEnemyHealth> ().bossIndex = indexCinematic;
 
 				if (indexCinematic == 0) {
 					go.transform.position = new Vector3 (go.transform.position.x, go.transform.position.y + 40, go.transform.position.z);

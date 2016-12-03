@@ -8,7 +8,7 @@ public class Weapon : MonoBehaviour {
 	public int damage;
 	public bool AttackButtonPressed;
 	//public LayerMask notToHit;
-	protected AttackLogic attackLogicOwner;
+	public AttackLogic attackLogicOwner;
 
 	// Use this for initialization
 	protected virtual void Start () {

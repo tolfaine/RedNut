@@ -63,6 +63,7 @@ public class GameInfo : MonoBehaviour {
 	}
 
 	public GameObject getGunBossAtIndex(int index){
+		Debug.Log (index);
 		return listBoss [index].lootedGun;
 	}
 }

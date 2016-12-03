@@ -8,6 +8,8 @@ public class PlayerAttackLogic : AttackLogic {
 	Vector2 movement_vector;
 
 
+
+
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
@@ -16,9 +18,22 @@ public class PlayerAttackLogic : AttackLogic {
 	
 	// Update is called once per frame
 	protected override void Update () {
-		ProcessInput ();
-		ProcessArmMovement ();
-		ProcessingAttack ();
+		if (!isDying) {
+			ProcessInput ();
+			ProcessArmMovement ();
+			ProcessingAttack ();
+		}
+
+	}
+	public override void IsDyingFunc(){
+		base.IsDyingFunc ();
+		GetComponent<PlayerMovement> ().dead = true;
+	}
+
+
+	public override void Resurect(){
+		base.Resurect ();
+		GetComponent<PlayerMovement> ().dead = false;
 	}
 
 	protected override void FixedUpdate () {
@@ -58,5 +73,34 @@ public class PlayerAttackLogic : AttackLogic {
 		bras.eulerAngles = new Vector3 (bras.eulerAngles.x, bras.eulerAngles.y, deg);
 	}
 
+	public void ChangeGun(GameObject newGun){
+		GameObject weaponPoint =  transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject;
 
+		Transform[] listChildren = weaponPoint.GetComponentsInChildren<Transform> ();
+
+
+
+		foreach (Transform t in listChildren) {
+			if (t.gameObject != weaponPoint) {
+				Destroy (t.gameObject);
+			}
+		}
+
+		GameObject weaponHolding = Instantiate (newGun, this.transform.position, this.transform.rotation) as GameObject; 
+		weaponHolding.GetComponentInChildren<Weapon> ().isAlly = true;
+
+		weaponHolding.transform.parent = weaponPoint.transform;
+		weaponHolding.transform.localPosition = Vector3.zero;
+		weaponHolding.transform.localEulerAngles = Vector3.zero;
+
+		weapon = weaponHolding.GetComponentInChildren<Weapon> ();
+
+		if (weapon == null) {
+			Debug.Log ("null null");
+		}
+		weapon.setOwner(this);
+
+
+	}
+		
 }

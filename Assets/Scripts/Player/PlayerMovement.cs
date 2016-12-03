@@ -15,18 +15,23 @@ public class PlayerMovement : MonoBehaviour {
 
 	public List<AudioClip> footSteps;
 
+	public bool dead;
+
 	void Start () {
 		rbody = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
 	}
 
 	void Update () {
-		ProcessInput ();
+		if (!dead) {
+			ProcessInput ();
+		}
 	}
 
 	void FixedUpdate(){
-		
-		ProcessMovement ();
+		if (!dead) {
+			ProcessMovement ();
+		}
 	}
 
 	public AudioClip randomFootstep(){

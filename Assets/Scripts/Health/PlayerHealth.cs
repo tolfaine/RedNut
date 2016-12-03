@@ -26,6 +26,14 @@ public class PlayerHealth : Health {
 		base.Update ();
 	}
 
+	public override void Resurect(){
+		base.Resurect ();
+
+		PlayerCenterPoint playerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").GetComponent<PlayerCenterPoint>();
+		playerCenterPoint.findPlayers ();
+	}
+
+
 	public override void ModifHealth(int damageCount)
 	{
 		if (!isDying) {
@@ -51,8 +59,6 @@ public class PlayerHealth : Health {
 
 		PlayerCenterPoint playerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").GetComponent<PlayerCenterPoint>();
 		playerCenterPoint.findPlayers ();
-
-
 
 	}
 		
