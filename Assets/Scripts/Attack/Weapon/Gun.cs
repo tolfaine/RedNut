@@ -22,15 +22,17 @@ public class Gun : Weapon {
 	[Space(10)]
 
 
-	private float currentReloadingCooldown;
-	private int nbBulletsUsed = 0;
-	private float currentFireCooldown = 0.0f;
-	private bool hasShooted = false;
-	private bool canShoot = true;
-	Transform firePoint;
-	bool needToReleaseButton = false;
-	bool needToReload = false ;
-	bool isReloading = false;
+	protected float currentReloadingCooldown;
+	protected int nbBulletsUsed = 0;
+	protected float currentFireCooldown = 0.0f;
+	protected bool hasShooted = false;
+	protected bool canShoot = true;
+	protected Transform firePoint;
+	protected bool needToReleaseButton = false;
+	protected bool needToReload = false ;
+	protected bool isReloading = false;
+
+	protected Vector2 direction;
 
 	public AudioClip randomShotSound(){
 		if (shotSounds.Count > 0) {
@@ -40,7 +42,7 @@ public class Gun : Weapon {
 		return null;
 	}
 
-	void Awake () {
+	protected virtual void Awake () {
 
 		firePoint = transform.FindChild ("FirePoint");
 		if (firePoint == null) {
@@ -75,7 +77,7 @@ public class Gun : Weapon {
 		}
 	}
 
-	void ProcessCooldowns(){
+	protected virtual void ProcessCooldowns(){
 		if (needToReload == false) {
 			if (hasShooted) {
 				currentFireCooldown = fireCooldown;
@@ -118,7 +120,7 @@ public class Gun : Weapon {
 
 
 	public override void AttackNoCd(Vector2 directionVector){
-
+		direction = directionVector;
 
 		playRandomShotSound ();
 
@@ -143,6 +145,7 @@ public class Gun : Weapon {
 	}
 
 	public override void Attack(Vector2 directionVector){
+		direction = directionVector;
 
 		if (canShoot) {
 			hasShooted = true;

@@ -5,9 +5,12 @@ using System.Collections.Generic;
 public class Projectile : MonoBehaviour {
 	public List<AudioClip> shotSounds = new List<AudioClip>(1);
 	[Range(0.2f,5)]
-	public float destroyTimer = 2f;
+	public float destroyTimer = 1f;
 	public bool isAlly;
 	int damage;	
+
+	public bool explosive;
+	public GameObject fxExplosition;
 
 
 //	LayerMask notToHit;
@@ -22,6 +25,7 @@ public class Projectile : MonoBehaviour {
 	
 	}
 
+
 	void OnTriggerEnter2D(Collider2D collision){
 		if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Player") {
 			GameObject go = collision.gameObject;
@@ -29,6 +33,15 @@ public class Projectile : MonoBehaviour {
 		}
 
 	}
+
+	void OnDestroy(){
+		if (explosive) {
+			GameObject ex = Instantiate (fxExplosition, transform.position, transform.rotation) as GameObject;
+			ex.GetComponent<Animator> ().SetBool ("active", true);
+			Destroy (ex, 2f);
+		}
+	}
+
 
 	public void SetDamage(int newDamage){
 		damage = newDamage;

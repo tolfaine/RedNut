@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour {
 	private GameInfo gameInfo;
 
 	public GameObject prefabPlayer;
+	public GameObject prefabPlayer2;
+
 	private GameObject currentGameObjectSessionManager;
 	private SessionManager currentSessionManager;
 	private int currentSessionManagerIndex = 0;
@@ -78,7 +80,12 @@ public class GameManager : MonoBehaviour {
 		int nbP = gameInfo.listSession [currentSessionManagerIndex].nbPlayers;
 
 		for (int i = 0; i < nbP; i++) {
-			GameObject go =  Instantiate (prefabPlayer, this.transform.position, this.transform.rotation) as GameObject; 
+			GameObject go;
+			if (i == 0) {
+				go = Instantiate (prefabPlayer, this.transform.position, this.transform.rotation) as GameObject; 
+			} else {
+				go = Instantiate (prefabPlayer2, this.transform.position, this.transform.rotation) as GameObject; 
+			}
 
 			GameObject weaponPoint =  go.transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject;
 			GameObject weaponHolding = Instantiate (firstWeapon, this.transform.position, this.transform.rotation) as GameObject; 

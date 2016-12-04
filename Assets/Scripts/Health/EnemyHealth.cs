@@ -5,6 +5,8 @@ public class EnemyHealth : Health {
 	
 	protected RoundManager currentRound;
 
+	public bool calledOwner = false;
+
 	// Use this for initialization
 	protected override void Start () {
 		base.Start ();
@@ -15,6 +17,11 @@ public class EnemyHealth : Health {
 	// Update is called once per frame
 	protected override void Update () {
 		base.Update ();
+
+		if (fell && !calledOwner) {
+			calledOwner = true;
+			currentRound.EnemyDied ();
+		}
 
 		if (readyToSelfDestroy && !destroyActivated) {
 			destroyActivated = true;
@@ -40,7 +47,7 @@ public class EnemyHealth : Health {
 
 	void OnDestroy(){
 
-		currentRound.EnemyDied ();
+		//currentRound.EnemyDied ();
 		InstantiateBasicLoot ();
 	}
 

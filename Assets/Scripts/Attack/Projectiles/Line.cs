@@ -19,9 +19,9 @@ public class Line : MonoBehaviour {
 		lineRender = gameObject.GetComponent<LineRenderer> ();
 		target = transform.FindChild("Target").gameObject;
 		lineRender.sortingLayerName = "Units";
-	//	firstPosition = this.transform.position;
 
-		lineRender.SetWidth (width,width);
+		lineRender.SetWidth (3,5);
+
 
 
 	}

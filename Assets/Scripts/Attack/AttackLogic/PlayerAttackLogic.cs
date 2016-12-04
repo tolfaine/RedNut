@@ -57,6 +57,7 @@ public class PlayerAttackLogic : AttackLogic {
 		if (movement_vector.x != 0 || movement_vector.y != 0) {
 			if (attackButtonPressed) {
 				weapon.AttackButtonPressed = true;
+
 				weapon.Attack(movement_vector);
 			}
 		} else {

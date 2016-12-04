@@ -10,6 +10,8 @@ public class LootableBossGun : Lootable {
 
 
 	protected override void Start () {
+
+		base.Start ();
 		destroyTimer = 0f;
 
 		bossGun = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getGunBossAtIndex (bossIndex);

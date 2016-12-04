@@ -13,7 +13,10 @@ public class Health : MonoBehaviour {
 	public Animator animator;
 
 	public bool invulnerable = true;
+	public bool fell = false;
 
+	public GameObject fxBlood;
+	GameObject blood = null;
 	protected virtual void Awake () {
 		health = maxHealth;
 	}
@@ -27,9 +30,25 @@ public class Health : MonoBehaviour {
 
 		if (isDying == true) {
 			animator.SetBool ("dead", true);
+
 			if (animator.GetCurrentAnimatorStateInfo (0).IsName ("mort") || animator.GetCurrentAnimatorStateInfo (0).IsName ("dead")  &&
 				animator.GetCurrentAnimatorStateInfo (0).normalizedTime >= 1.0f) {
-				readyToSelfDestroy = true;
+
+				if (blood == null) {
+					blood = Instantiate (fxBlood, transform.position, transform.rotation) as GameObject;
+					blood.transform.parent = this.transform;
+					Transform groun = transform.FindChild ("GroundPoint");
+					blood.transform.localPosition = new Vector3 (0f, -8f, 0f);
+					blood.transform.FindChild ("GroundPoint").transform.position = new Vector3 (groun.position.x, groun.position.y-0.5f -blood.transform.localPosition.y , groun.position.z);
+					blood.GetComponent<Animator> ().SetBool ("active", true);
+					fell = true;
+				}
+
+				if (blood.GetComponent<Animator> ().GetCurrentAnimatorStateInfo (0).IsName ("sang") &&
+					blood.GetComponent<Animator> ().GetCurrentAnimatorStateInfo (0).normalizedTime >= 1.0f) {
+						readyToSelfDestroy = true;
+				}
+					
 			}
 
 		}
@@ -41,6 +60,7 @@ public class Health : MonoBehaviour {
 		isDying = false;
 		readyToSelfDestroy = false;
 		destroyActivated = false;
+		fell = false;
 
 
 		GetComponent<AttackLogic> ().Resurect ();
