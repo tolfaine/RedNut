@@ -9,6 +9,12 @@ public class CinematicManager : MonoBehaviour {
 	public Animator currentAnimator;
 	public int indexCinematic; 
 	public bool active = false;
+
+	public AudioClip dong;
+	public AudioClip truck;
+	public float voulumeDong = 1f;
+	public float voulumeTruck= 1f;
+
 	// Use this for initialization
 	void Start () {
 		cameraFlow = GameObject.FindGameObjectWithTag ("MainCamera").GetComponent<CameraFlow>();
@@ -47,7 +53,7 @@ public class CinematicManager : MonoBehaviour {
 
 				go.GetComponent<IAAttackLogic> ().StartAppearing (2f);
 				cameraFlow.Invoke ("ResetCamOnPlayer", 2f);
-
+				Invoke ("PlayDong", 2f);
 
 				active = false;
 			} else {
@@ -72,8 +78,19 @@ public class CinematicManager : MonoBehaviour {
 		currentAnimator = go.GetComponent<Animator> ();
 		currentAnimator.SetBool ("trigger", true);
 
+		PlayTruck ();
 
 
+	
+	}
 
+	public void PlayDong(){
+		AudioSource source = CustomAudioSource.PlayClipAt (dong, transform.position);
+		source.volume = voulumeDong;
+	}
+
+	public void PlayTruck(){
+		AudioSource source = CustomAudioSource.PlayClipAt (truck, transform.position);
+		source.volume = voulumeTruck;
 	}
 }

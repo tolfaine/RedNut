@@ -8,7 +8,7 @@ public class TimedEffect : Effect {
 	public float repeatTime = 0f;
 
 	// Use this for initialization
-	void Start () {
+	protected virtual void Start () {
 		target = transform;
 
 		if (repeatTime > 0) {

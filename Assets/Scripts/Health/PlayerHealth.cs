@@ -3,17 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerHealth : Health {
-	MyHealth life_ui;
+	public MyHealth life_ui;
 	public List<AudioClip> hitSounds = new List<AudioClip>(1);
 	public List<AudioClip> dieSounds = new List<AudioClip>(1);
 	AudioSource a;
+	public float volumeHurt = 0.7f;
+	public float volumeDead = 1f;
+
+	public int playerNumber;
 
 	// Use this for initialization
 	protected override void Start () {
 		base.Start ();
 		SetInvulnerability (false);
 		isAlly = true;
-		life_ui = GameObject.FindGameObjectWithTag ("life_ui").GetComponent<MyHealth> ();
+		life_ui = GameObject.FindGameObjectWithTag ("HUD").transform.FindChild("Control-life_"+ playerNumber).GetComponent<MyHealth> ();
 		life_ui.maxHealthPlayer = maxHealth;
 
 		a= gameObject.GetComponent<AudioSource> ();
@@ -36,8 +40,10 @@ public class PlayerHealth : Health {
 
 	public override void ModifHealth(int damageCount)
 	{
-		if (!isDying) {
+		
+		if (!isDying && damageCount > 0) {
 			a.clip = randomHItSound ();
+			a.volume = volumeHurt;
 			a.Play ();
 		}
 
@@ -51,6 +57,7 @@ public class PlayerHealth : Health {
 	protected override void Die(){
 		if (!isDying) {
 			a.clip = randomDeadSound ();
+			a.volume = volumeDead;
 			a.Play ();
 		}
 
@@ -59,6 +66,8 @@ public class PlayerHealth : Health {
 
 		PlayerCenterPoint playerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").GetComponent<PlayerCenterPoint>();
 		playerCenterPoint.findPlayers ();
+
+
 
 	}
 		

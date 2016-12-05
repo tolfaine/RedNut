@@ -17,6 +17,12 @@ public class WaterPistol : Weapon {
 	public bool hasShooted = false;
 
 
+	public AudioSource source;
+
+	public float volumeShot = 1f;
+
+	public bool triggeredSound = false;
+
 	protected void Awake(){
 		firePoint = transform.FindChild ("FirePoint");
 		if (firePoint == null) {
@@ -27,8 +33,13 @@ public class WaterPistol : Weapon {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start ();
+
+		source = GetComponent<AudioSource> ();
+		source.volume = volumeShot;
+
 		projectileFlux = GetComponentInChildren<Line> ();
 		projectileFlux.setStartPosition (firePoint);
+
 
 	}
 
@@ -59,6 +70,12 @@ public class WaterPistol : Weapon {
 		//	projectileFluxObj.SetActive (true);
 			projectileFlux.isActive = true;
 
+			if (!triggeredSound) {
+				triggeredSound = true;
+
+				source.Play ();
+			}
+
 			RaycastHit2D hit = Physics2D.Raycast (firePoint.position, direction, distance);
 
 			if (hit.collider != null && hit.collider.gameObject.tag == "Enemy") {
@@ -73,7 +90,6 @@ public class WaterPistol : Weapon {
 
 					if (hit.collider.gameObject.GetComponent<Health> ().isAlly != isAlly) {
 						hit.collider.gameObject.GetComponent<Health> ().ModifHealth (damage);
-						Debug.Log (hit.collider.gameObject.GetComponent<Health> ().health);
 					}
 
 				}
@@ -85,6 +101,8 @@ public class WaterPistol : Weapon {
 			}
 
 		} else if (!AttackButtonPressed) {
+			triggeredSound = false;
+			source.Stop ();
 			//projectileFluxObj.SetActive (false);
 			projectileFlux.isActive = false;
 			projectileFlux.setToSamePosition (firePoint.position);

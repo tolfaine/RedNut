@@ -24,6 +24,9 @@ public class LevelManager : MonoBehaviour {
 		levelInfo = newLevelInfo;
 		sessionManagerOwner = owner;
 		spawnningPoints = newSpawnningPoints;
+
+		GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().nbRound = levelInfo.listRound.Count -1;
+
 		NextRound ();
 
 	}
@@ -70,7 +73,6 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public int getCurrentLevelIndex(){
-		Debug.Log (currentLevelManagerIndex);
 		return currentLevelManagerIndex;
 	}
 

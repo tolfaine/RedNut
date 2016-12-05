@@ -17,9 +17,36 @@ public class PlayerMovement : MonoBehaviour {
 
 	public bool dead;
 
+	public List<AudioClip> startGameSound = new List<AudioClip> ();
+	public float volumeStart = 1f;
+
+
+	public AudioClip randomStartSound(){
+		if (startGameSound.Count > 0) {
+			int rand = Random.Range (0, startGameSound.Count);
+			return startGameSound [rand];
+		}
+
+		return null;
+	}
+
+	public void playRandomStartSound(){
+		AudioClip clip = randomStartSound ();
+		if (clip != null) {
+			AudioSource source =  CustomAudioSource.PlayClipAt (clip, transform.position);
+			source.volume = volumeStart;
+
+		}
+	}
+
 	void Start () {
 		rbody = GetComponent<Rigidbody2D> ();
 		anim = GetComponent<Animator> ();
+
+		if (playerNumber == 1) {
+			playRandomStartSound ();
+		}
+
 	}
 
 	void Update () {

@@ -22,6 +22,15 @@ public class GameManager : MonoBehaviour {
 	public List<Transform> spawnningPoints;
 
 
+	public List<AudioClip> dieSounds = new List<AudioClip>(1);
+	public float volumeDead = 1f;
+
+	public AudioClip randomDeadSound(){
+		int rand = Random.Range(0,dieSounds.Count);
+
+		return dieSounds [rand];
+	}
+
 	public Vector3 randomPosition(){
 
 		Vector3 PlayerCenterPoint = GameObject.FindGameObjectWithTag ("PlayerCenterPoint").transform.position;
@@ -43,7 +52,7 @@ public class GameManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		gameInfo = transform.GetComponent<GameInfo> ();
-		startSinglePlayerGame ();
+		startMultiPlayerGame ();
 
 	}
 	
@@ -54,11 +63,15 @@ public class GameManager : MonoBehaviour {
 
 	void startTutoGame(){
 		currentSessionManagerIndex = 0;
+
 		CreateSession ();
 	}
 	void startSinglePlayerGame(){
 		Debug.Log ("Start Single Player Game");
 		currentSessionManagerIndex = 1;
+
+		GameObject.FindGameObjectWithTag ("UI_1").SetActive (true);
+		GameObject.FindGameObjectWithTag ("UI_2").SetActive (false);
 		CreateSession ();
 
 	}
@@ -66,6 +79,11 @@ public class GameManager : MonoBehaviour {
 	void startMultiPlayerGame(){
 		Debug.Log ("Start Multi Player Game");
 		currentSessionManagerIndex = 2;
+
+		GameObject.FindGameObjectWithTag ("UI_1").SetActive (false);
+		GameObject.FindGameObjectWithTag ("UI_2").SetActive (true);
+
+
 		CreateSession ();
 	}
 
@@ -94,7 +112,7 @@ public class GameManager : MonoBehaviour {
 			weaponHolding.transform.localPosition = Vector3.zero;
 
 			PlayerAttackLogic playerAttackLogic = go.GetComponent<PlayerAttackLogic>();
-			playerAttackLogic.playerNumber = i+1;
+			playerAttackLogic.SetPlayerNumber(i+1);
 
 			PlayerMovement playerMovement = go.GetComponent<PlayerMovement>();
 			playerMovement.playerNumber = playerAttackLogic.playerNumber;

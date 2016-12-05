@@ -52,6 +52,7 @@ public class RoundManager : MonoBehaviour {
 	void CheckNbDiedEnemis ()
 	{
 		if (nbEnemiesDead == roundInfo.nbEnemies && !isBossRound) {
+			GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().NextRound ();
 			levelManagerOwner.NextRound ();
 		}// else if (isBossRound) {
 			//levelManagerOwner.NextRound ();
@@ -60,12 +61,15 @@ public class RoundManager : MonoBehaviour {
 	}
 
 	public void EndBossRound(){
+		GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().EndBossPhase ();
 		levelManagerOwner.EndLastRound ();
 	}
 		
 	public void SpawnEnemy(){
 		
 		if (!isBossRound) {
+			
+
 			Debug.Log ("Spawn Enemies");
 			Transform currentTransform;
 			int index = 0;

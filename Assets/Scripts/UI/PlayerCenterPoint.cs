@@ -51,6 +51,10 @@ public class PlayerCenterPoint : MonoBehaviour {
 		}
 
 		nbTarget = listTargets.Count;
+
+		if (nbTarget == 0) {
+			GameObject.FindGameObjectWithTag ("GameOver").GetComponent<GameOver> ().PlayerLost ();
+		}
 	}
 		
 }

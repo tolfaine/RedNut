@@ -62,10 +62,16 @@ public class GameInfo : MonoBehaviour {
 		return listBoss [index].boss;
 	}
 
-	public GameObject getGunBossAtIndex(int index){
+	public GameObject getGunBossAtIndex(int index, bool worn ){
 		Debug.Log (index);
-		return listBoss [index].lootedGun;
+		if (worn) {
+			return listBoss [index].wornGun;
+		} else {
+			return listBoss [index].lootedGun;
+		}
+		return null;
 	}
+
 }
 
 
@@ -105,5 +111,6 @@ public class Boss{
 	public enumTypeEnnemi type;
 	public GameObject boss;
 	public GameObject lootedGun;
+	public GameObject wornGun;
 }
 

@@ -12,6 +12,8 @@ public class Projectile : MonoBehaviour {
 	public bool explosive;
 	public GameObject fxExplosition;
 
+	public float volumeBullet = 1f;
+
 
 //	LayerMask notToHit;
 
@@ -81,9 +83,13 @@ public class Projectile : MonoBehaviour {
 	}
 
 	public void playRandomHitSound(){
-		AudioClip clip = randomShotSound ();
-		if (clip != null) {
-			CustomAudioSource.PlayClipAt (clip, transform.position);
+
+		if (isAlly) {
+			AudioClip clip = randomShotSound ();
+			if (clip != null) {
+				AudioSource source = CustomAudioSource.PlayClipAt (clip, transform.position);
+				source.volume = volumeBullet;
+			}
 		}
 	}
 

@@ -21,7 +21,7 @@ public class LootManager : MonoBehaviour {
 
 		float rand = Random.Range(0f,1f);
 
-		if(rand <= 0.5){
+		if(rand <= 0.7f){
 			GameObject o;
 			int rand2 = Random.Range(0,mobLoots.Count);
 			o = mobLoots[rand2];

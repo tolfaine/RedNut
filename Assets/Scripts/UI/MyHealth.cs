@@ -10,7 +10,7 @@ public class MyHealth : MonoBehaviour {
 
 	// Update is called once per frame
 	void Start (){
-		GameObject.FindGameObjectWithTag ("control_life").GetComponent<UIProgressBar> ().value = 1f;
+		GetComponent<UIProgressBar> ().value = 1f;
 	}
 
 	void Update () {
@@ -18,7 +18,7 @@ public class MyHealth : MonoBehaviour {
 		if (control_life_f != lastLife) {
 			lastLife = control_life_f;
 			float newValue = MapValueRangeLife (control_life_f);
-			GameObject.FindGameObjectWithTag ("life_ui").GetComponent<UIProgressBar> ().value = newValue;
+			GetComponent<UIProgressBar> ().value = newValue;
 		}
 
 

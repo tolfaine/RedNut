@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+
+
 
 public class EnemyHealth : Health {
 	
 	protected RoundManager currentRound;
+	//public List<AudioClip> dieSounds = new List<AudioClip>(1);
+	public float volumeDead = 1f;
 
 	public bool calledOwner = false;
 
@@ -29,6 +34,15 @@ public class EnemyHealth : Health {
 			Destroy (this.gameObject);
 		}
 	}
+	public void playRandomDeadSound(){
+
+		AudioClip clip = GameObject.FindGameObjectWithTag ("GameManager").GetComponent<GameManager> ().randomDeadSound ();
+		if (clip != null) {
+			AudioSource source = CustomAudioSource.PlayClipAt (clip, transform.position);
+			source.volume = volumeDead;
+		}
+	}
+
 
 	public override void ModifHealth(int damageCount)
 	{
@@ -39,7 +53,7 @@ public class EnemyHealth : Health {
 		if (currentRound != null && !isDying) {
 			//currentRound.EnemyDied ();
 		}
-
+		playRandomDeadSound ();
 		base.Die ();
 
 
@@ -48,6 +62,7 @@ public class EnemyHealth : Health {
 	void OnDestroy(){
 
 		//currentRound.EnemyDied ();
+
 		InstantiateBasicLoot ();
 	}
 

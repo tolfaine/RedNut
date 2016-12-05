@@ -12,7 +12,7 @@ public class MyPhase : MonoBehaviour {
 
 	// Update is called once per frame
 	void Start (){
-		GameObject.FindGameObjectWithTag ("phase_ui").GetComponent<UISlider> ().value = 0f;
+		GetComponent<UISlider> ().value = 0f;
 	}
 
 	void Update () {
@@ -24,7 +24,7 @@ public class MyPhase : MonoBehaviour {
 		if (control_jaugePhase_f != lastjaugePhase) {
 			lastjaugePhase = control_jaugePhase_f;
 			float newValue = MapValueRangeLife (control_jaugePhase_f);
-			GameObject.FindGameObjectWithTag ("phase_ui").GetComponent<UISlider> ().value = newValue;
+			GetComponent<UISlider> ().value = newValue;
 		}
 
 

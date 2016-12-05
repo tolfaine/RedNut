@@ -8,12 +8,21 @@ public class BossEnemyHealth : EnemyHealth {
 
 	protected virtual void Start () {
 		base.Start ();
+		GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().bossMaxLife = maxHealth;
+
 
 	}
 	protected override void Die(){
 		base.Die ();
 
 
+	}
+
+	public override void ModifHealth(int damageCount)
+	{
+		base.ModifHealth (damageCount);
+
+		GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().SetBossLife (health);
 	}
 
 	void OnDestroy(){

@@ -9,11 +9,14 @@ public class PlayerAttackLogic : AttackLogic {
 
 
 
-
+	public void SetPlayerNumber(int number){
+		playerNumber = number;
+		GetComponent<PlayerHealth> ().playerNumber = number;
+		GetComponent<PhaseManager> ().playerNumber = number;
+	}
 	// Use this for initialization
 	protected override void Start () {
 		base.Start();
-
 	}
 	
 	// Update is called once per frame

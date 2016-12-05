@@ -14,7 +14,7 @@ public class LootableBossGun : Lootable {
 		base.Start ();
 		destroyTimer = 0f;
 
-		bossGun = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getGunBossAtIndex (bossIndex);
+		bossGun = GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getGunBossAtIndex (bossIndex, false);
 		GetComponent<SpriteRenderer> ().sprite = bossGun.GetComponentInChildren <SpriteRenderer> ().sprite;
 	}
 	

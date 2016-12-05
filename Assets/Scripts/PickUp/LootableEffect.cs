@@ -10,6 +10,10 @@ public class LootableEffect : Lootable {
 	public List<AudioClip> lootSounds = new List<AudioClip>(1);
 	public List<Sprite> listSprites = new List<Sprite>(1);
 
+	public float volumeEffect = 1f;
+
+	int spriteIndex = -1;
+
 	// Use this for initialization
 	protected override void Start () {
 		base.Start ();
@@ -26,9 +30,15 @@ public class LootableEffect : Lootable {
 	}
 
 	public AudioClip randomLootSound(){
-		int rand = Random.Range(0,lootSounds.Count);
+		if (spriteIndex > -1 && spriteIndex < lootSounds.Count) {
+			return lootSounds [spriteIndex];
+		} else {
+			int rand = Random.Range(0,lootSounds.Count);
+			return lootSounds [rand];
+		}
 
-		return lootSounds [rand];
+
+		return null;
 	}
 
 	public Sprite randomSprite(){
@@ -36,6 +46,7 @@ public class LootableEffect : Lootable {
 			return null;
 		}
 		int rand = Random.Range(0,listSprites.Count);
+		spriteIndex = rand;
 		return listSprites [rand];
 	}
 
@@ -45,10 +56,12 @@ public class LootableEffect : Lootable {
 
 
 		if (go.tag == "Player") {
-			
-			AudioSource a = go.GetComponent<AudioSource> ();
-			a.clip = randomLootSound ();
-			a.Play ();
+
+
+			AudioSource a = CustomAudioSource.PlayClipAt (randomLootSound (), this.gameObject.transform.position);
+			//a.clip = randomLootSound ();
+			a.volume = volumeEffect;
+			//a.Play ();
 
 
 			if (typeStat == enumStat.SlowEnemies) {
@@ -59,6 +72,7 @@ public class LootableEffect : Lootable {
 					smte.setTarget (g);
 					smte.modValue = modValue;
 					smte.typeStat = enumStat.SlowEnemies;
+					smte.playerNumber = go.GetComponent<PlayerAttackLogic> ().playerNumber;
 
 					/*
 					smte = g.AddComponent<StatModTimedEffect> () as StatModTimedEffect;
@@ -69,10 +83,28 @@ public class LootableEffect : Lootable {
 
 			} else {
 				if (isTimedEffect) {
-					StatModTimedEffect smte = go.AddComponent<StatModTimedEffect> () as StatModTimedEffect;
-					smte.setTarget (go);
-					smte.modValue = modValue;
-					smte.typeStat = typeStat;
+					StatModTimedEffect[] listSmte = go.GetComponents<StatModTimedEffect> ();
+					bool alreadyThere = false;
+					StatModTimedEffect eff = null;
+					foreach (StatModTimedEffect effect in listSmte) {
+						if (effect.typeStat == typeStat) {
+							alreadyThere = true;
+							eff = effect;
+							break;
+						}
+					}
+
+					if (alreadyThere) {
+						eff.refreshEffect ();
+					} else {
+						StatModTimedEffect smte = go.AddComponent<StatModTimedEffect> () as StatModTimedEffect;
+						smte.setTarget (go);
+						smte.modValue = modValue;
+						smte.typeStat = typeStat;
+						smte.playerNumber = go.GetComponent<PlayerAttackLogic> ().playerNumber;
+					}
+						
+
 				} else {
 					StatModEffect sme = go.AddComponent<StatModEffect> () as StatModEffect;
 					

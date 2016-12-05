@@ -24,7 +24,11 @@ public class UltimeGun : Gun {
 	public bool triggerDuration = false;
 	public bool triggerDelay = false;
 
+	public AudioSource source;
 
+	public float volumeShot = 1f;
+
+	public bool triggeredSound = false;
 
 	protected override void Awake () {
 		base.Awake ();
@@ -35,6 +39,10 @@ public class UltimeGun : Gun {
 	// Use this for initialization
 	protected override void Start () {
 		base.Start ();
+
+		source = GetComponent<AudioSource> ();
+		source.volume = volumeShot;
+
 		projectileFlux = GetComponentInChildren<Line> ();
 		projectileFlux.setStartPosition (firePoint);
 	}
@@ -84,12 +92,18 @@ public class UltimeGun : Gun {
 	protected void FixedUpdate(){
 
 		if (AttackButtonPressed && lasoring) {
+			if (!triggeredSound) {
+
+			}
 
 			if (!triggerLasor) {
 				triggerLasor = true;
 				stoppedLasor = false;
 				currentDuration = lasorDuration;
 				triggerDuration = false;
+
+				triggeredSound = true;
+				source.Play ();
 			}
 
 			projectileFlux.isActive = true;
@@ -118,7 +132,10 @@ public class UltimeGun : Gun {
 			}
 
 
-		} else{
+		} else if((AttackButtonPressed && !lasoring ) || !AttackButtonPressed ) {
+
+			triggeredSound = true;
+			source.Stop ();
 			/*
 			if (!stoppedLasor) {
 				stoppedLasor = true;

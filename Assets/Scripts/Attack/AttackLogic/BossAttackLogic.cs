@@ -24,7 +24,7 @@ public class BossAttackLogic : IAAttackLogic {
 	// Use this for initialization
 	void Start () {
 		GameObject weaponPoint =  transform.Find("BrasAnchor/Bras/WeaponPoint").gameObject; // !!!!!!
-		GameObject weaponHolding = Instantiate (GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getGunBossAtIndex (bossIndex), this.transform.position, this.transform.rotation) as GameObject; 
+		GameObject weaponHolding = Instantiate (GameObject.FindWithTag ("GameManager").GetComponent<GameInfo> ().getGunBossAtIndex (bossIndex, true), this.transform.position, this.transform.rotation) as GameObject; 
 		weaponHolding.transform.parent = weaponPoint.transform;
 		weaponHolding.transform.localPosition = Vector3.zero;
 

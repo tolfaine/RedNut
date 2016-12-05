@@ -22,8 +22,6 @@ public class Line : MonoBehaviour {
 
 		lineRender.SetWidth (3,5);
 
-
-
 	}
 
 	void LateUpdate(){

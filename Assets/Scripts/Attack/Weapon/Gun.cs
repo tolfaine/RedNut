@@ -34,6 +34,10 @@ public class Gun : Weapon {
 
 	protected Vector2 direction;
 
+
+	public float volumeGun = 1f;
+	public float randomPitchrRange = 0f;
+
 	public AudioClip randomShotSound(){
 		if (shotSounds.Count > 0) {
 			int rand = Random.Range (0, shotSounds.Count);
@@ -114,7 +118,7 @@ public class Gun : Weapon {
 
 	public float randomPitch(){
 	//	float rand = Random.Range(0.95f,1.05f); gland
-		float rand = Random.Range(0.98f,1.02f);
+		float rand = Random.Range(1f - randomPitchrRange,1f + randomPitchrRange);
 		return rand;
 	}
 
@@ -201,7 +205,9 @@ public class Gun : Weapon {
 		//	a.Play ();
 		AudioClip clip = randomShotSound ();
 		if (clip != null) {
-			CustomAudioSource.PlayClipAt (clip, transform.position);
+			AudioSource source =  CustomAudioSource.PlayClipAt (clip, transform.position);
+			source.volume = volumeGun;
+			source.pitch = randomPitch ();
 		}
 		//}
 	}
