@@ -25,6 +25,9 @@ public class GameManager : MonoBehaviour {
 	public List<AudioClip> dieSounds = new List<AudioClip>(1);
 	public float volumeDead = 1f;
 
+
+	public int nbPlayer = 2;
+
 	public AudioClip randomDeadSound(){
 		int rand = Random.Range(0,dieSounds.Count);
 
@@ -51,8 +54,23 @@ public class GameManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		/*
+		GameObject g = GameObject.FindGameObjectWithTag ("NbPlayerManager");
+
+		if (g != null) {
+			nbPlayer = g.GetComponent<NbPlayerManager> ().nbPlayer;
+		
+		}*/
+
 		gameInfo = transform.GetComponent<GameInfo> ();
 		startMultiPlayerGame ();
+		/*
+		if (nbPlayer >= 2) {
+			startMultiPlayerGame ();
+		} else {
+			startSinglePlayerGame ();
+		}*/
+
 
 	}
 	
@@ -78,7 +96,7 @@ public class GameManager : MonoBehaviour {
 
 	void startMultiPlayerGame(){
 		Debug.Log ("Start Multi Player Game");
-		currentSessionManagerIndex = 2;
+		currentSessionManagerIndex = 1;
 
 		GameObject.FindGameObjectWithTag ("UI_1").SetActive (false);
 		GameObject.FindGameObjectWithTag ("UI_2").SetActive (true);
@@ -124,6 +142,9 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void EndGame(){
+
+
+		GameObject.FindGameObjectWithTag ("Win").GetComponent<Win> ().PlayerWon ();
 		Debug.Log ("GG EZ");
 	}
 }

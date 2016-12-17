@@ -97,6 +97,7 @@ public class LevelInfo{
 public class RoundInfo{
 	public int nbEnemies;
 	public bool isBossRound;
+	public bool isLastRound;
 }
 
 

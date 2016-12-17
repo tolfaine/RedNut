@@ -22,10 +22,19 @@ public class LootManager : MonoBehaviour {
 		float rand = Random.Range(0f,1f);
 
 		if(rand <= 0.7f){
-			GameObject o;
-			int rand2 = Random.Range(0,mobLoots.Count);
-			o = mobLoots[rand2];
-			return o;
+
+			float clop = Random.Range(0f,1f);
+
+			if (clop <= 0.8) {
+				GameObject o;
+				o = mobLoots[0];
+				return o;
+			} else {
+				GameObject o;
+				int rand2 = Random.Range(0,mobLoots.Count);
+				o = mobLoots[rand2];
+				return o;
+			}
 		}
 		return null;
 	}

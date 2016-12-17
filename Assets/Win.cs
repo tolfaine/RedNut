@@ -9,7 +9,7 @@ public class Win : MonoBehaviour {
 		CustomAudioSource.PlayClipAt (winSound, this.gameObject.transform.position);
 		display.SetActive (true);
 
-		GameObject.FindGameObjectWithTag ("Pause").GetComponent<Pause> ().pause ();
+		Time.timeScale = 0;
 
 		AudioSource[] a = GameObject.FindGameObjectWithTag ("PhaseMusicManager").GetComponents<AudioSource> ();
 

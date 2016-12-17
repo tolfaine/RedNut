@@ -45,12 +45,14 @@ public class Pause : MonoBehaviour
 
     public void pause()
     {
-		playRandomINSound ();
+		if (!transform.parent.FindChild ("GameOver").GetComponent<GameOver>().over) {
+			playRandomINSound ();
 
-        menuPause.SetActive(true);
-        pauseEnabled = true;
-       // AudioListener.volume = 0;
-        Time.timeScale = 0;
+			menuPause.SetActive (true);
+			pauseEnabled = true;
+			// AudioListener.volume = 0;
+			Time.timeScale = 0;
+		}
     }
 
 	public AudioClip randomShotIn(){

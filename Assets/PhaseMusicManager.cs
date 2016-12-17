@@ -41,17 +41,19 @@ public class PhaseMusicManager : MonoBehaviour {
 
 
 	public void ChangePhase(int newPhase){
-		
-		waitingForTempo = true;
-		this.newPhase = newPhase;
 
-		if (currenteSource == 0) {
-			currenteSource = 1;
-			lastSource = 0;
-		} else {
-			currenteSource = 0;
-			lastSource = 1;
+		if (newPhase > currentPhase) {
+			waitingForTempo = true;
+			this.newPhase = newPhase;
 
+			if (currenteSource == 0) {
+				currenteSource = 1;
+				lastSource = 0;
+			} else {
+				currenteSource = 0;
+				lastSource = 1;
+
+			}
 		}
 	}
 

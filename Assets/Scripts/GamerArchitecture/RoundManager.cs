@@ -11,6 +11,8 @@ public class RoundManager : MonoBehaviour {
 	public GameObject enemyPrefab;
 	private bool isBossRound;
 
+	public bool isLastRound;
+
 	private LevelManager levelManagerOwner;
 
 	public void setValues(RoundInfo newRoundInfo,List<Transform> newSpawnningPoints,LevelManager owner){
@@ -53,7 +55,13 @@ public class RoundManager : MonoBehaviour {
 	{
 		if (nbEnemiesDead == roundInfo.nbEnemies && !isBossRound) {
 			GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().NextRound ();
-			levelManagerOwner.NextRound ();
+
+			if (roundInfo.isLastRound) {
+				levelManagerOwner.EndLastRound ();
+			} else {
+				levelManagerOwner.NextRound ();
+			}
+
 		}// else if (isBossRound) {
 			//levelManagerOwner.NextRound ();
 		//}
@@ -62,12 +70,23 @@ public class RoundManager : MonoBehaviour {
 
 	public void EndBossRound(){
 		GameObject.FindGameObjectWithTag ("progressBar_ui").GetComponent<ProgressBar> ().EndBossPhase ();
+
+		GameObject[] lGo = GameObject.FindGameObjectsWithTag ("Player");
+		foreach (GameObject g in lGo) {
+			PlayerHealth ph = g.GetComponent<PlayerHealth> ();
+			if (!ph.isItDying ()) {
+				ph.ModifHealth (-100);
+			}
+		}
+
 		levelManagerOwner.EndLastRound ();
 	}
 		
 	public void SpawnEnemy(){
 		
 		if (!isBossRound) {
+
+
 			
 
 			Debug.Log ("Spawn Enemies");

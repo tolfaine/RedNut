@@ -7,11 +7,15 @@ public class GameOver : MonoBehaviour {
 
 	public GameObject display;
 
+	public bool over =false;
+
 	public void PlayerLost(){
+		over = true;
 		CustomAudioSource.PlayClipAt (gameoverSound, this.gameObject.transform.position);
 		display.SetActive (true);
 
-		GameObject.FindGameObjectWithTag ("Pause").GetComponent<Pause> ().pause ();
+		//GameObject.FindGameObjectWithTag ("Pause").GetComponent<Pause> ().pause ();
+		Time.timeScale = 0;
 
 		AudioSource[] a = GameObject.FindGameObjectWithTag ("PhaseMusicManager").GetComponents<AudioSource> ();
 
